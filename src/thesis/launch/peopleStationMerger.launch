@@ -1,0 +1,4 @@
+<launch>
+	<!-- Remapp from spencer_tracking_msgs::DetectedPersons to people_msgs::People and add task information -->
+	<node name="ThesisMiddleware" pkg="thesis" type="PeopleStationMerger_Node" output="screen" required="true"/>
+</launch>

@@ -1,0 +1,19 @@
+# Store configurations specific to the local costmap
+
+#The "global_frame" parameter defines what coordinate frame the costmap should run in
+global_frame: odom
+
+# Setting the "rolling_window" parameter to true means that the costmap will remain centered around the robot as the robot moves through the world
+rolling_window: true
+
+# Determines the frequency, in Hz, at which the costmap will run its update loop
+update_frequency: 5.0
+
+# Determines the rate, in Hz, at which the costmap will publish visualization information
+publish_frequency: 5.0
+
+plugins:
+  - {name: stations_layer,            type: "stations_layer_namespace::StationLayer"}
+  - {name: proxemic_layer,            type: "social_navigation_layers::ProxemicLayer"}
+  - {name: obstacles_layer,           type: "costmap_2d::ObstacleLayer"}
+  - {name: inflation,                 type: "costmap_2d::InflationLayer"}

@@ -1,0 +1,22 @@
+<launch>
+
+	<include file="$(find thesis)/launch/getMap.launch" />
+
+	<include file="$(find thesis)/launch/transformers.launch" />
+
+	<include file="$(find thesis)/launch/amcl.launch" />
+
+	<include file="$(find thesis)/launch/robotLocalization.launch" />
+
+	<!--include file="$(find thesis)/launch/peopleDetection.launch" /-->
+
+	<include file="$(find thesis)/launch/turtlebot.launch" />
+
+	<include file="$(find thesis)/launch/navigation.launch" />
+
+	<include file="$(find thesis)/launch/peopleStationMerger.launch" />
+
+	<include file="$(find thesis)/launch/rviz.launch"/>
+
+	<!--include file="$(find thesis)/launch/peopleSimulator.launch" /-->
+</launch>

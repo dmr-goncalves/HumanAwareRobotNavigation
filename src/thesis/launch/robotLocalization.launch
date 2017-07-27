@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+
+<launch>
+    <!--Merge multiple sensor data /-->
+    <node pkg="robot_localization" type="ekf_localization_node" name="robotLocalizationNode" clear_params="true">
+
+        <param name="frequency" value="30"/>
+
+        <!-- the minimum time at which the robot has to receive messages -->
+        <param name="sensor_timeout" value="0.1"/>
+
+        <!-- If set to true, two_d_mode will only take x and y readings from the laser point cloud to estimate position, that is z readings are disregarded. Roll and yaw are disregarded as well. If set to false, all points from the laser point cloud are used to estimate position. 3D is more useful to detect different levels of position in the ground, while 2d while only create a planar x and y view-->
+        <param name="two_d_mode" value="true"/>
+
+        <param name="map_frame" value="map"/>
+        <param name="odom_frame" value="odom"/>
+        <param name="base_link_frame" value="base_link"/>
+        <param name="world_frame" value="odom"/>
+
+        <param name="odom0" value="/odom"/>
+        
+        <param name="imu0" value="/imu/data"/>
+
+        <!-- X, Y, Z -->
+        <!-- Roll, Pitch, Yaw -->
+        <!-- X, Y, Z Velocities -->
+        <!-- Roll, Pitch, Yaw Velocities -->
+        <!-- X, Y, Z Accel -->
+        <rosparam param="odom0_config">
+            [true, true, false,
+            false, false, false, 
+            true, true, true, 
+            false, false, false,  
+            true, true, true] 
+        </rosparam>
+
+        <rosparam param="imu0_config">
+            [false, false, false
+            true, true, true,
+            false, false, false,
+            true, true, true,
+            false, false, false]
+        </rosparam>
+
+        <!-- Set this to true if different components (IMU, odometry, gps) are integrated to estimate position. Set to false if navsat is used-->
+        <param name="odom0_differential" value="true"/>
+        <param name="imu0_differential" value="true"/>
+
+        <param name="imu0_remove_gravitational_acceleration" value="true"/>
+
+        <param name="print_diagnostics" value="true"/>
+
+        <!-- Queue size when information is retrieved at the frequency rate set before-->
+        <param name="odom0_queue_size" value="10"/>
+        <param name="imu0_queue_size" value="10"/>
+
+        <param name="debug"           value="false"/>
+        <param name="debug_out_file"  value="/home/duarte/thesis_ws/src/thesis/debug/debug_ekf_localization.txt"/>
+    </node>
+</launch>

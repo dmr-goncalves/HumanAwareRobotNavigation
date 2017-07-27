@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<stations_location_library>
+  <station category='red'>
+    <center>
+      <x>2.0</x>
+      <y>-3.3</y>
+      <z>0.0</z>
+    </center>
+    <peopleWalk>left</peopleWalk>
+  </station>
+  <station category='green'>
+    <center>
+      <x>4.4</x>
+      <y>-3.3</y>
+      <z>0.0</z>
+    </center>
+    <peopleWalk>left</peopleWalk>
+  </station>
+  <station category='blue'>
+    <center>
+      <x>6.4</x>
+      <y>-3.3</y>
+      <z>0.0</z>
+    </center>
+    <peopleWalk>left</peopleWalk>
+  </station>
+</stations_location_library>

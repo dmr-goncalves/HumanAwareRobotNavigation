@@ -1,0 +1,15 @@
+<launch>
+ <param name="/use_sim_time" value="true"/>
+
+ #Launch Vizualiztion Module
+ <node name="robotVisualisation" pkg="rviz" type="rviz" output="screen"  />
+
+ #Launch robot model and simulated world
+ <include file="$(find husky_gazebo)/launch/husky_playpen.launch" />
+
+ #launch Mapper
+ <node name="mapper" pkg="robot_mapping" type="Mapper_Node" output="screen" />
+
+ #Transform between robot and map
+ <node pkg="tf" type="static_transform_publisher" name="odomMap" args="100 -100 0 0 -1 0 0 odom map 100"/>
+ </launch>

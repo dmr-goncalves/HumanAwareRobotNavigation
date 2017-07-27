@@ -1,0 +1,18 @@
+# Store configurations specific to the global costmap
+
+#The "global_frame" parameter defines what coordinate frame the costmap should run in
+global_frame: odom
+
+# Setting the "rolling_window" parameter to true means that the costmap will remain centered around the robot as the robot moves through the world
+rolling_window: true
+track_unknown_space: true
+
+# Determines the frequency, in Hz, at which the costmap will run its update loop
+update_frequency: 1.0
+
+# Determines the rate, in Hz, at which the costmap will publish visualization information
+publish_frequency: 5.0
+
+plugins:
+  - {name: obstacles_laser,           type: "costmap_2d::ObstacleLayer"}
+  - {name: inflation,                 type: "costmap_2d::InflationLayer"}

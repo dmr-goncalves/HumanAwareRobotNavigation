@@ -1,0 +1,4 @@
+<launch>
+	<!--Launch People Detection-->
+	<include file="$(find spencer_people_tracking_launch)/launch/tracking_single_rgbd_sensor.launch"/>
+</launch>

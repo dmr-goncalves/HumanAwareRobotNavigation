@@ -1,0 +1,6 @@
+<launch>
+	<!-- Launch AMCL Localization -->
+	<node name="amclLocalization" pkg="amcl" type="amcl">
+		<param name="laser_max_range" value="30.0"/>
+	</node>
+</launch>
