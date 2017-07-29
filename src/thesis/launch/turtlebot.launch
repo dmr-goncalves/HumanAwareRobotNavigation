@@ -1,16 +1,18 @@
+<?xml version="1.0"?>
+
 <launch>
 	
 	<!-- Launch minimal sensors -->
 	<include file="$(find turtlebot_bringup)/launch/minimal.launch"/>
 
 	<!-- Launch 3dsensor -->
-	<include file="$(find turtlebot_bringup)/launch/3dsensor.launch"/>	
+	<!--include file="$(find turtlebot_bringup)/launch/3dsensor.launch"/-->	
 
 	<!-- Launch laser scan -->
 	<node pkg="hokuyo_node" type="hokuyo_node" name="hokuyo_laser">
-		<param name="frame_id" type="string" value="hokuyo_link" />
-		<param name="port" type="string" value="/dev/ttyAMCO" />
-		<remap from="/scan" to="/turtlebot/sensors/laser_scan"/>
+		<param name="frame_id" type="string" value="plate_top_link" />
+		<param name="port" type="string" value="/dev/ttyAMC0" />
+		<remap from="/scan" to="/mobile_base/sensors/laser_scan"/>
 	</node>
 	
 </launch>

@@ -50,7 +50,6 @@ echo "  --- Installing hector-gazebo-plugins ---"
 
 sudo apt-get install ros-kinetic-hector-gazebo-plugins
 
-<<<<<<< HEAD
 echo "  --- Installing tinyxml2 ---"
 
 sudo apt-get install libtinyxml2-dev
@@ -92,8 +91,3 @@ echo " * ---   Any question add an issue in github 		--- * "
 echo " * --- Or contact me in dmr.goncalves@hotmail.com --- * "
 
 echo " ****************************************************** "
-=======
-sudo apt-get install libtinyxml2-dev
-
-sudo apt-get install libopencv*
->>>>>>> 31d0d4b4d8ef30de45b6c9e993393e7b6d04ac9e

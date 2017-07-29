@@ -17,7 +17,6 @@ PeopleStationMerger::PeopleStationMerger():m_nd("~"){
   image_transport::ImageTransport it(m_nd);
   m_pub_Image = it.advertise("/labeledMapImage", 1);
 
-
   /* Configuration of auxiliar variables */
   initialTime = ros::Time::now();
   auxiliarTimeToNewPersons = ros::Time::now();
@@ -59,10 +58,15 @@ void PeopleStationMerger::detectedPeopleClbk(const spencer_tracking_msgs::Detect
     dp.position = DP.detections.at(x).pose.pose.position;
     dp.confidence = DP.detections.at(x).confidence;
 
-    std::pair<double,std::string> dpPair = getWeight(-dp.position.x, -dp.position.y);
-    
-    dp.weight = dpPair.first;
-    dp.workstation = dpPair.second;
+    if(dp.velocity.x == 0 && dp.velocity.y == 0){
+      dp.weight = 0;
+      dp.workstation = "Null Velocity";
+    }else{
+      std::pair<double,std::string> dpPair = getWeight(-dp.position.x, -dp.position.y);
+
+      dp.weight = dpPair.first;
+      dp.workstation = dpPair.second;
+    }
 
     dpplAux.people.push_back(dp);
   }
@@ -79,10 +83,22 @@ void PeopleStationMerger::trackedPeopleClbk(const spencer_tracking_msgs::Tracked
         std::stringstream ss;//create a stringstream
         ss << TP.tracks.at(x).detection_id;
         if(dppl.people.at(c).name == ss.str()){ //To update people velocities and positions
+
           dppl.people.at(c).velocity.x = TP.tracks.at(x).twist.twist.linear.x;
           dppl.people.at(c).velocity.y = TP.tracks.at(x).twist.twist.linear.y;
           dppl.people.at(c).velocity.z = TP.tracks.at(x).twist.twist.linear.z;
           dppl.people.at(c).position = TP.tracks.at(x).pose.pose.position;
+
+          if(dppl.people.at(c).velocity.x == 0 && dppl.people.at(c).velocity.y == 0){
+            dppl.people.at(c).weight = 0;
+            dppl.people.at(c).workstation = "Null Velocity";
+          }else{
+            std::pair<double,std::string> dpPair = getWeight(-dppl.people.at(c).position.x, -dppl.people.at(c).position.y);
+
+            dppl.people.at(c).weight = dpPair.first;
+            dppl.people.at(c).workstation = dpPair.second;
+          }
+
           c = dppl.people.size();
         }
       }

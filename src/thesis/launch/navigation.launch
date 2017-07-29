@@ -1,5 +1,9 @@
+<?xml version="1.0"?>
+
 <launch>
 	<!--Launch move_base-->
+
+	<arg name="use_simulation_topics" default="true" />
 
 	<arg name="base_global_planner" default="navfn/NavfnROS"/>
 	<arg name="base_local_planner" default="base_local_planner/TrajectoryPlannerROS"/>
@@ -12,8 +16,11 @@
 		<rosparam file="$(find thesis)/config/planner.yaml" command="load"/>
 
 		<!-- Observation sources located in costmap_common_params.yaml -->
-		<rosparam file="$(find thesis)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
-		<rosparam file="$(find thesis)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+		<rosparam file="$(find thesis)/config/costmap_common_params_real_robot.yaml" command="load" ns="global_costmap" unless="$(arg use_simulation_topics)"/>
+		<rosparam file="$(find thesis)/config/costmap_common_params_real_robot.yaml" command="load" ns="local_costmap" unless="$(arg use_simulation_topics)"/>
+
+		<rosparam file="$(find thesis)/config/costmap_common_params_simulation.yaml" command="load" ns="global_costmap" if="$(arg use_simulation_topics)"/>
+		<rosparam file="$(find thesis)/config/costmap_common_params_simulation.yaml" command="load" ns="local_costmap" if="$(arg use_simulation_topics)"/>
 
 		<!-- Local Costmap -->
 		<rosparam file="$(find thesis)/config/costmap_local_params.yaml" command="load" ns="local_costmap" />
@@ -26,7 +33,6 @@
 		<param name="global_costmap/height" value="40.0"/>
 		<param name="global_costmap/origin_x" value="-20.0"/>
 		<param name="global_costmap/origin_y" value="-20.0"/>
-
-		<remap from="odom" to="odometry/filtered" />
+		
 	</node>
 </launch>

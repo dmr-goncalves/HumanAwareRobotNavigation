@@ -16,6 +16,6 @@ publish_frequency: 5.0
 plugins:
   - {name: static,                    type: "costmap_2d::StaticLayer"}
   - {name: stations_layer,            type: "stations_layer_namespace::StationLayer"}
-  - {name: proxemic_layer,            type: "social_navigation_layers::ProxemicLayer"}
-  - {name: obstacles_layer,           type: "costmap_2d::ObstacleLayer"}
+  #- {name: proxemic_layer,            type: "social_navigation_layers::ProxemicLayer"}
+  #- {name: obstacles_layer,           type: "costmap_2d::ObstacleLayer"}
   - {name: inflation,                 type: "costmap_2d::InflationLayer"}
