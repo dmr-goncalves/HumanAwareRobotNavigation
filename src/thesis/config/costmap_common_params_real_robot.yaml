@@ -17,10 +17,8 @@ resolution: 0.05
 # Set thresholds on obstacle information put into the costmap. 
 # The "obstacle_range" parameter determines the maximum range sensor reading that will result in an obstacle being put into the costmap. which means that the robot will only update its map with information about obstacles that are within 5.0 meters of the base.
 # The "raytrace_range" parameter determines the range to which we will raytrace freespace given a sensor reading. Setting it to 6.0 meters as we have above means that the robot will attempt to clear out space in front of it up to 6.0 meters away given a sensor reading
-#obstacle_range: 29.5 # Husky Range
-#raytrace_range: 30.0 # Husky Range
-obstacle_range: 3.9
-raytrace_range: 4.0
+obstacle_range: 4.5
+raytrace_range: 5.0
 
 #Layer definitions
 static:
@@ -32,6 +30,6 @@ obstacles_layer:
   laser: {data_type: LaserScan, clearing: true, marking: true, topic: mobile_base/sensors/laser_scan, inf_is_valid: true}
 
 inflation:
-  inflation_radius: 0.3
+  inflation_radius: 0.5
 
       

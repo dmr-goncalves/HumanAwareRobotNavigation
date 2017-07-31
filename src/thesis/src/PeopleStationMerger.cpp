@@ -5,8 +5,8 @@
 PeopleStationMerger::PeopleStationMerger():m_nd("~"){
 
   /* Configuration of the Subsribers and Publishers topics and callbacks */
-  m_sub_DetectedPersons = m_nd.subscribe("/spencer/perception/detected_persons", 1, &PeopleStationMerger::detectedPeopleClbk, this);
-  m_sub_TrackedPersons = m_nd.subscribe("/spencer/perception/tracked_persons", 1, &PeopleStationMerger::trackedPeopleClbk, this);
+  m_sub_DetectedPersons = m_nd.subscribe("/spencer/perception_internal/detected_persons/rgbd_front_top/upper_body", 1, &PeopleStationMerger::detectedPeopleClbk, this);
+  m_sub_TrackedPersons = m_nd.subscribe("/spencer/perception/tracked_persons_confirmed_by_HOG_or_upper_body", 1, &PeopleStationMerger::trackedPeopleClbk, this);
   m_sub_Map = m_nd.subscribe("/map", 1, &PeopleStationMerger::mapClbk, this);
   m_sub_AMCL = m_nd.subscribe("/amcl_pose", 1, &PeopleStationMerger::amclClbk, this);
 

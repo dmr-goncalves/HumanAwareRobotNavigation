@@ -3,9 +3,9 @@
 <launch>
 	<!-- Launch Mapping -->
 
-	<arg name="simulation" default="true" />
+	<arg name="use_simulation_topics" default="true" />
 	
-	<remap from="scan" to="/mobile_base/sensors/laser_scan" unless="$(arg simulation)"/>
+	<remap from="scan" to="/mobile_base/sensors/laser_scan" unless="$(arg use_simulation_topics)"/>
 
 	<node name="MappingNode" pkg="gmapping" type="slam_gmapping" output="screen"/>
 

@@ -33,6 +33,8 @@
 		<param name="global_costmap/height" value="40.0"/>
 		<param name="global_costmap/origin_x" value="-20.0"/>
 		<param name="global_costmap/origin_y" value="-20.0"/>
+
+		<remap from="cmd_vel" to="cmd_vel_mux/input/navi" unless="$(arg use_simulation_topics)"/>
 		
 	</node>
 </launch>

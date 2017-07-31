@@ -18,7 +18,9 @@
 		<arg name="use_simulation_topics" value="true"/>
 	</include>
 
-	<!--include file="$(find thesis)/launch/peopleDetection.launch" /-->
+	<!--include file="$(find thesis)/launch/peopleDetection.launch" >
+		<arg name="height_above_ground" value="1.0"/>
+	</include-->
 
 	<!--include file="$(find thesis)/launch/turtlebot.launch" /-->
 
