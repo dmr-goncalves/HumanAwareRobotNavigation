@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<colors_library>
-	<color category="red">
+<lables_library>
+	<label category="red">
 		<R> 255 </R>
 		<G> 0 </G>
 		<B> 0 </B>
 		<weight> 20.0 </weight>
-	</color>
-	<color category="green">
+	</label>
+	<label category="green">
 		<R> 0 </R>
 		<G> 255 </G>
 		<B> 0 </B>
 		<weight> 5.0 </weight>
-	</color>
-	<color category="blue">
+	</label>
+	<label category="blue">
 		<R> 0 </R>
 		<G> 0 </G>
 		<B> 255 </B>
 		<weight> 10.0 </weight>
-	</color>
-	<color category="crosswalk">
+	</label>
+	<label category="crosswalk">
 		<R> 255 </R>
 		<G> 0 </G>
 		<B> 255 </B>
 		<weight> 0.0 </weight>
-	</color>
-</colors_library>
+	</label>
+</labels_library>

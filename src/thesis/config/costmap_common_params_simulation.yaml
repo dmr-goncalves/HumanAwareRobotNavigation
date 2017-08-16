@@ -25,9 +25,10 @@ static:
 
 obstacles_layer:
   observation_sources: laser
-  laser: {data_type: LaserScan, clearing: true, marking: true, topic: scan, inf_is_valid: true}
+  laser: {data_type: LaserScan, clearing: true, marking: true, topic: scan}
 
 inflation:
-  inflation_radius: 0.3
+  inflation_radius: 0.5
+  cost_scaling_factor: 1.0
 
       

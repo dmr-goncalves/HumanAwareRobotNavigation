@@ -3,6 +3,7 @@
 #define STATION_LAYER_H_
 
 #include <ros/ros.h>
+
 #include <costmap_2d/layer.h>
 #include <costmap_2d/layered_costmap.h>
 
@@ -10,9 +11,6 @@
 #include <stations_layer/StationLayerConfig.h>
 
 #include <thesis/DetectedStations.h>
-
-#include <grid_map_msgs/GridMap.h>
-#include <grid_map_ros/grid_map_ros.hpp>
 
 #include <math.h>
 

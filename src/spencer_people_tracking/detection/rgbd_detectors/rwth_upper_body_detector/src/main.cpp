@@ -288,7 +288,6 @@ void callback(const ImageConstPtr &depth, const GroundPlane::ConstPtr &gp, const
             sensor_image.step   = image_rgb.bytesPerLine();
             sensor_image.data   = vector<uchar>(bits, bits + image_rgb.byteCount());
             sensor_image.encoding = color_image->encoding;
-
             pub_result_image.publish(sensor_image);
         } else {
             ROS_WARN("Color image not in RGB8/BGR8 format not supported");

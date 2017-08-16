@@ -28,14 +28,24 @@
 
 #include <tinyxml2.h>
 
+#include <utilities/printer.hpp>
+
 using namespace grid_map;
 using namespace tinyxml2;
 
-typedef struct color{
+typedef struct label{
   std::string name;
   Eigen::Vector3i color;
   double weight;
-} SColor;
+} SLabel;
+
+typedef struct triple
+{
+  int  first;
+  std::string second;
+  double third;
+} STriple;
+
 
 class PeopleStationMerger
 {
@@ -54,8 +64,6 @@ private:
   ros::Subscriber                               m_sub_DetectedPersons, m_sub_TrackedPersons, m_sub_Odom;
   ros::Subscriber                               m_sub_Map, m_sub_AMCL;
   
-  ros::Time                                     initialTime, auxiliarTimeToNewPersons;
-
   sensor_msgs::Image                            colorImg;
 
   GridMap                                       gridMap;
@@ -67,11 +75,11 @@ private:
 
   thesis::DetectedPeople                        dppl;
   thesis::DetectedStations                      DS;
-  
-  double HorizontalLeft, HorizontalRight, VerticalDown, VerticalUp;
 
-  SColor color;
-  std::vector<SColor> existingColors;
+  SLabel label;
+  std::vector<SLabel> existingLabels;
+
+  double left, right, down, up;
 
   void detectedPeopleClbk(const spencer_tracking_msgs::DetectedPersons DP);
   void trackedPeopleClbk(const spencer_tracking_msgs::TrackedPersons TP);
@@ -79,7 +87,7 @@ private:
   void amclClbk(const geometry_msgs::PoseWithCovarianceStamped &localization);
   
   double getVelocity(double finalPosition, double initialPosition, double finalTime, double initialTime);
-  std::pair<double,std::string> getWeight(float x, float y);
+  STriple getWeight(float x, float y);
   void gridMapConstruction();
   void findStations();
   void getColors();

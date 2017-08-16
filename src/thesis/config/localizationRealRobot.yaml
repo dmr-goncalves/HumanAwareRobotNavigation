@@ -8,9 +8,6 @@ two_d_mode: true
 
 frequency: 50
 
-# The minimum time at which the robot has to receive messages
-# sensor_timeout: 0.1
-
 odom0: odom
 imu0: mobile_base/sensors/imu_data 
 

@@ -14,7 +14,9 @@ find_package(catkin REQUIRED COMPONENTS
 	rospy
 	message_generation
 	image_transport
-	cmake_modules)
+	cmake_modules
+	utilities)
+	
 
 find_package(Eigen3 REQUIRED eigen3)
 find_package(TinyXML2 REQUIRED)

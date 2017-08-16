@@ -4,7 +4,7 @@
 
 simulator::simulator():m_nd("~"){
   //Configurationd of the Subsribers and Publishers topics and callbacks
-  m_pub_People = m_nd.advertise<spencer_tracking_msgs::DetectedPersons>("/simulator/spencer/perception/detected_persons", 1);
+  m_pub_People = m_nd.advertise<spencer_tracking_msgs::DetectedPersons>("/spencer/perception_internal/detected_persons/rgbd_front_top/upper_body", 1);
   x1 = 2;
   y1 = -3.3;
   x2 = 4.4;

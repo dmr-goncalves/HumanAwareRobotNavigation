@@ -5,6 +5,7 @@ global_frame: odom
 
 # Setting the "rolling_window" parameter to true means that the costmap will remain centered around the robot as the robot moves through the world
 rolling_window: true
+static_map: false
 track_unknown_space: true
 
 # Determines the frequency, in Hz, at which the costmap will run its update loop
@@ -14,7 +15,6 @@ update_frequency: 1.0
 publish_frequency: 5.0
 
 plugins:
-  #- {name: stations_layer,            type: "stations_layer_namespace::StationLayer"}
   #- {name: proxemic_layer,            type: "social_navigation_layers::ProxemicLayer"}
   - {name: obstacles_laser,           type: "costmap_2d::ObstacleLayer"}
   - {name: inflation,                 type: "costmap_2d::InflationLayer"}

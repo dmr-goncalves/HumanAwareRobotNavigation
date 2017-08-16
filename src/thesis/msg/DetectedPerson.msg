@@ -19,3 +19,6 @@ string                   workstation
 
 # Workstation wheight
 int8 					 weight
+
+# Crosswalk angle
+float64					 angle

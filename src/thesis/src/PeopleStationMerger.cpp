@@ -5,8 +5,8 @@
 PeopleStationMerger::PeopleStationMerger():m_nd("~"){
 
   /* Configuration of the Subsribers and Publishers topics and callbacks */
-  m_sub_DetectedPersons = m_nd.subscribe("/spencer/perception_internal/detected_persons/rgbd_front_top/upper_body", 1, &PeopleStationMerger::detectedPeopleClbk, this);
-  m_sub_TrackedPersons = m_nd.subscribe("/spencer/perception/tracked_persons_confirmed_by_HOG_or_upper_body", 1, &PeopleStationMerger::trackedPeopleClbk, this);
+  m_sub_DetectedPersons = m_nd.subscribe("/detected_people", 1, &PeopleStationMerger::detectedPeopleClbk, this);
+  m_sub_TrackedPersons = m_nd.subscribe("/tracked_people", 1, &PeopleStationMerger::trackedPeopleClbk, this);
   m_sub_Map = m_nd.subscribe("/map", 1, &PeopleStationMerger::mapClbk, this);
   m_sub_AMCL = m_nd.subscribe("/amcl_pose", 1, &PeopleStationMerger::amclClbk, this);
 
@@ -18,8 +18,6 @@ PeopleStationMerger::PeopleStationMerger():m_nd("~"){
   m_pub_Image = it.advertise("/labeledMapImage", 1);
 
   /* Configuration of auxiliar variables */
-  initialTime = ros::Time::now();
-  auxiliarTimeToNewPersons = ros::Time::now();
   firstTime = true;
 
   /* Configuration of grid_map variable */
@@ -28,11 +26,11 @@ PeopleStationMerger::PeopleStationMerger():m_nd("~"){
   /* Frame id attribution */
   dppl.header.frame_id = "people";
 
-  /* Configuration of stations orientations */
-  VerticalDown = M_PI;
-  VerticalUp = 0;
-  HorizontalLeft = 0.5 * M_PI ;
-  HorizontalRight = 1.5 * M_PI;
+  /* Configuration of custom orientations */
+  up = M_PI;
+  down = 0;
+  left = 0.5 * M_PI ;
+  right = 1.5 * M_PI;
 
   PeopleStationMerger::getColors();
 }
@@ -62,11 +60,14 @@ void PeopleStationMerger::detectedPeopleClbk(const spencer_tracking_msgs::Detect
       dp.weight = 0;
       dp.workstation = "Null Velocity";
     }else{
-      std::pair<double,std::string> dpPair = getWeight(-dp.position.x, -dp.position.y);
 
-      dp.weight = dpPair.first;
-      dp.workstation = dpPair.second;
+      STriple dpTriple = getWeight(-dp.position.x, -dp.position.y);
+
+      dp.weight = dpTriple.first;
+      dp.workstation = dpTriple.second;
+      dp.angle = dpTriple.third;
     }
+    
 
     dpplAux.people.push_back(dp);
   }
@@ -93,12 +94,11 @@ void PeopleStationMerger::trackedPeopleClbk(const spencer_tracking_msgs::Tracked
             dppl.people.at(c).weight = 0;
             dppl.people.at(c).workstation = "Null Velocity";
           }else{
-            std::pair<double,std::string> dpPair = getWeight(-dppl.people.at(c).position.x, -dppl.people.at(c).position.y);
+            STriple dpTriple = getWeight(-dppl.people.at(c).position.x, -dppl.people.at(c).position.y);
 
-            dppl.people.at(c).weight = dpPair.first;
-            dppl.people.at(c).workstation = dpPair.second;
+            dppl.people.at(c).weight = dpTriple.first;
+            dppl.people.at(c).workstation = dpTriple.second;
           }
-
           c = dppl.people.size();
         }
       }
@@ -107,7 +107,7 @@ void PeopleStationMerger::trackedPeopleClbk(const spencer_tracking_msgs::Tracked
   m_pub_People.publish(dppl);
 }
 
-std::pair<double,std::string> PeopleStationMerger::getWeight(float x, float y){
+STriple PeopleStationMerger::getWeight(float x, float y){
 
   grid_map_msgs::GridMap message;
   GridMapRosConverter::toMessage(gridMap, message);
@@ -123,81 +123,97 @@ std::pair<double,std::string> PeopleStationMerger::getWeight(float x, float y){
   int gridX = (x - mapOrigin.position.x) / mapResolution;
   int gridY = (y - mapOrigin.position.y) / mapResolution;
 
+  int robotLocalizationGridX = (robotLocalization.pose.pose.position.x - mapOrigin.position.x) / mapResolution;
+  int robotLocalizationGridY = (robotLocalization.pose.pose.position.y- mapOrigin.position.x) /mapResolution;
+
   Index index = Index(gridX, gridY);
+  Index robotLocalizationIndex = Index(robotLocalizationGridX, robotLocalizationGridY);
 
   Position center;
+  Position robotCenter;
 
-  std::pair<double, std::string> resultPair;
+  STriple resultTriple;
 
   gridMap.getPosition(index, center);
+  gridMap.getPosition(robotLocalizationIndex, robotCenter);
+
   double radius = 0.6;
   double peopleCrosswalkRadius = 2.0;
 
-  for(int i = 0; i < existingColors.size(); i++){
-    if(!existingColors.at(i).name.compare("crosswalk")){
+  for(int i = 0; i < existingLabels.size(); i++){
+    if(!existingLabels.at(i).name.compare("crosswalk")){
      crosswalkIndex = i;
    }
  }
 
- if(crosswalkIndex > -1){
-   for (grid_map::CircleIterator peopleCrosswalkIterator(gridMap, center, peopleCrosswalkRadius); !peopleCrosswalkIterator.isPastEnd(); ++peopleCrosswalkIterator) {
+ if(existingLabels.size() == 0){
+  resultTriple.first = 0.0;
+  resultTriple.second = "none";
+  return resultTriple;
+}
 
-    float valuePeopleCrosswalkSearch = gridMap.at("color", *peopleCrosswalkIterator);
+if(crosswalkIndex > -1 && existingLabels.size() > 1){
+ for (grid_map::CircleIterator peopleCrosswalkIterator(gridMap, center, peopleCrosswalkRadius); !peopleCrosswalkIterator.isPastEnd(); ++peopleCrosswalkIterator) {
 
-    Eigen::Vector3f colorVectorPeopleCrosswalk; 
+  float valuePeopleCrosswalkSearch = gridMap.at("color", *peopleCrosswalkIterator);
 
-    colorValueToVector(valuePeopleCrosswalkSearch, colorVectorPeopleCrosswalk);
+  Eigen::Vector3f colorVectorPeopleCrosswalk; 
 
-    Eigen::Vector3i colorVectorPeopleCrosswalkAnotherBase;
+  colorValueToVector(valuePeopleCrosswalkSearch, colorVectorPeopleCrosswalk);
 
-    colorVectorPeopleCrosswalkAnotherBase(0) = colorVectorPeopleCrosswalk(0) * 255;
-    colorVectorPeopleCrosswalkAnotherBase(1) = colorVectorPeopleCrosswalk(1) * 255;
-    colorVectorPeopleCrosswalkAnotherBase(2) = colorVectorPeopleCrosswalk(2) * 255;
+  Eigen::Vector3i colorVectorPeopleCrosswalkAnotherBase;
 
-  if(colorVectorPeopleCrosswalkAnotherBase == existingColors.at(crosswalkIndex).color){ //Check if we found the crosswalk*/
+  colorVectorPeopleCrosswalkAnotherBase(0) = colorVectorPeopleCrosswalk(0) * 255;
+  colorVectorPeopleCrosswalkAnotherBase(1) = colorVectorPeopleCrosswalk(1) * 255;
+  colorVectorPeopleCrosswalkAnotherBase(2) = colorVectorPeopleCrosswalk(2) * 255;
+
+  if(colorVectorPeopleCrosswalkAnotherBase == existingLabels.at(crosswalkIndex).color){ //Check if we found the crosswalk*/
 
     //To iterate in a given radius around the person
-    for (grid_map::CircleIterator colorIterator(gridMap, center, radius); !colorIterator.isPastEnd(); ++colorIterator) {
+  for (grid_map::CircleIterator colorIterator(gridMap, center, radius); !colorIterator.isPastEnd(); ++colorIterator) {
 
-      float colorValue = gridMap.at("color", *colorIterator);
+    float colorValue = gridMap.at("color", *colorIterator);
 
-      Eigen::Vector3f colorVector;
+    Eigen::Vector3f colorVector;
 
-      colorValueToVector(colorValue, colorVector);
+    colorValueToVector(colorValue, colorVector);
 
-      Eigen::Vector3i colorVectorAnotherBase;
+    Eigen::Vector3i colorVectorAnotherBase;
 
-      colorVectorAnotherBase(0) = colorVector(0) * 255;
-      colorVectorAnotherBase(1) = colorVector(1) * 255;
-      colorVectorAnotherBase(2) = colorVector(2) * 255;
+    colorVectorAnotherBase(0) = colorVector(0) * 255;
+    colorVectorAnotherBase(1) = colorVector(1) * 255;
+    colorVectorAnotherBase(2) = colorVector(2) * 255;
 
-      for(int x = 0; x < existingColors.size(); x++){
+    for(int x = 0; x < existingLabels.size(); x++){
 
-        if(colorVectorAnotherBase == existingColors.at(x).color && x != crosswalkIndex){
-          resultPair.first = existingColors.at(x).weight;
-          resultPair.second = existingColors.at(x).name;
-          return resultPair;
-        }
-      }
-
-      if(colorIterator.isPastEnd()){
-        resultPair.first = 0.0;
-        resultPair.second = "none";
-        return resultPair;
+      if(colorVectorAnotherBase == existingLabels.at(x).color && x != crosswalkIndex){
+        resultTriple.first = existingLabels.at(x).weight;
+        resultTriple.second = existingLabels.at(x).name;        
+        return resultTriple;
       }
     }
-  }else{
-    if(peopleCrosswalkIterator.isPastEnd()){
-      resultPair.first = 0.0;        
-      resultPair.second = "none";
-      return resultPair;
+
+
+    if(colorIterator.isPastEnd()){
+      resultTriple.first = 0.0;
+      resultTriple.second = "none";
+      return resultTriple;
     }
   }
+
+}else{
+  if(peopleCrosswalkIterator.isPastEnd()){
+    resultTriple.first = 0.0;        
+    resultTriple.second = "none";
+    return resultTriple;
+  }
+}
+
 }
 }else{
- resultPair.first = 0.0;        
- resultPair.second = "none";
- return resultPair; 
+ resultTriple.first = 0.0;        
+ resultTriple.second = "none";
+ return resultTriple; 
 }
 }
 
@@ -211,12 +227,12 @@ void PeopleStationMerger::gridMapConstruction(){
 
   if(!image.data )// Check for invalid input
   {
-    std::cout <<  "Could not open or find the image" << std::endl ;
+    printer::printRed("Could not open or find the image") ;
   }
 
   if (image.empty())
   {
-    std::cout << "Error : Image cannot be loaded..!!" << std::endl;
+    printer::printRed("Error : Image cannot be loaded..!!");
   }
 
   cv::cvtColor(image, image, CV_BGR2RGB);
@@ -237,8 +253,8 @@ void PeopleStationMerger::gridMapConstruction(){
 
   gridMap.setBasicLayers({"color"});
 
-  ROS_INFO("Created map with size %f x %f m (%i x %i cells).",
-    gridMap.getLength().x(), gridMap.getLength().y(), gridMap.getSize()(0), gridMap.getSize()(1));
+  std::string str = "Created map with size " + std::to_string(gridMap.getLength().x()) + " x " + std::to_string(gridMap.getLength().y()) + " m (" + std::to_string(gridMap.getSize()(0)) + " x " + std::to_string(gridMap.getSize()(1)) + " cels).";
+  printer::printGreen(str);
 
   grid_map_msgs::GridMap message;
   GridMapRosConverter::toMessage(gridMap, message);
@@ -274,85 +290,91 @@ void PeopleStationMerger::findStations(){
 
   std::string uri = ros::package::getPath("thesis") + "/misc/stations.xml";
 
-  doc.LoadFile(uri.c_str());
+  if(!doc.LoadFile(uri.c_str())){
 
-  XMLElement* stations_location_library = doc.FirstChildElement("stations_location_library");
+    XMLElement* stations_location_library = doc.FirstChildElement("stations_location_library");
 
-  for(XMLElement* e = stations_location_library->FirstChildElement("station"); e != NULL; e = e->NextSiblingElement("station") ){
+    for(XMLElement* e = stations_location_library->FirstChildElement("station"); e != NULL; e = e->NextSiblingElement("station") ){
 
-    thesis::DetectedStation ds;
+      thesis::DetectedStation ds;
 
-    const char* color = e->Attribute("category");
+      const char* color = e->Attribute("category");
 
-    std::string color_(color);
+      std::string color_(color);
 
-    if(color_ == "red"){
-      ds.name = "red";
-      ds.magnitude = 20;
-    }else if(color_ == "yellow"){
-      ds.name = "yellow";
-      ds.magnitude = 15;
-    }else if(color_ == "blue"){
-      ds.name = "blue";
-      ds.magnitude = 10;
-    }else if(color_ == "green"){
-      ds.name = "green";
-      ds.magnitude = 5;
+      if(color_ == "red"){
+        ds.name = "red";
+        ds.magnitude = 20;
+      }else if(color_ == "yellow"){
+        ds.name = "yellow";
+        ds.magnitude = 15;
+      }else if(color_ == "blue"){
+        ds.name = "blue";
+        ds.magnitude = 10;
+      }else if(color_ == "green"){
+        ds.name = "green";
+        ds.magnitude = 5;
+      }
+
+      e->FirstChildElement("center")->FirstChildElement("x")->QueryDoubleText(&ds.center.x);
+      e->FirstChildElement("center")->FirstChildElement("y")->QueryDoubleText(&ds.center.y);
+      e->FirstChildElement("center")->FirstChildElement("z")->QueryDoubleText(&ds.center.z);
+
+      const char* orientation = e->FirstChildElement("peopleWalk")->GetText();
+
+      std::string orientation_(orientation);
+
+      if(orientation_ == "left"){
+        ds.angle = left;
+      }else if(orientation_ == "right"){
+        ds.angle = right;
+      }else if(orientation_ == "up"){
+        ds.angle = up;
+      }else if(orientation_ == "down"){
+        ds.angle = down;
+      }
+
+      DS.stations.push_back(ds);
     }
 
-    e->FirstChildElement("center")->FirstChildElement("x")->QueryDoubleText(&ds.center.x);
-    e->FirstChildElement("center")->FirstChildElement("y")->QueryDoubleText(&ds.center.y);
-    e->FirstChildElement("center")->FirstChildElement("z")->QueryDoubleText(&ds.center.z);
-
-    const char* orientation = e->FirstChildElement("peopleWalk")->GetText();
-
-    std::string orientation_(orientation);
-
-    if(orientation_ == "left"){
-      ds.angle = HorizontalLeft;
-    }else if(orientation_ == "right"){
-      ds.angle = HorizontalRight;
-    }else if(orientation_ == "up"){
-      ds.angle = VerticalUp;
-    }else if(orientation_ == "down"){
-      ds.angle = VerticalDown;
-    }
-    
-    DS.stations.push_back(ds);
+    m_pub_Stations.publish(DS);
+  }else{
+    printer::printRed("Could not open or find stations.xml file");
   }
-
-  m_pub_Stations.publish(DS);
 }
 
 void PeopleStationMerger::getColors(){
 
   XMLDocument doc;
 
-  std::string uri = ros::package::getPath("thesis") + "/misc/colors.xml";
+  std::string uri = ros::package::getPath("thesis") + "/misc/labels.xml";
 
-  doc.LoadFile(uri.c_str());
+  if(!doc.LoadFile(uri.c_str())){
 
-  XMLElement* colors_library = doc.FirstChildElement("colors_library");
+    XMLElement* labels_library = doc.FirstChildElement("labels_library");
 
-  for(XMLElement* e = colors_library->FirstChildElement("color"); e != NULL; e = e->NextSiblingElement("color") ){
-    const char* name = e->Attribute("category");
+    for(XMLElement* e = labels_library->FirstChildElement("label"); e != NULL; e = e->NextSiblingElement("label") ){
+      const char* name = e->Attribute("category");
 
-    Eigen::Vector3i cl;
-    double r,g,b, wght;
+      Eigen::Vector3i cl;
+      double r,g,b, wght;
 
-    e->FirstChildElement("R")->QueryDoubleText(&r);
-    e->FirstChildElement("G")->QueryDoubleText(&g);
-    e->FirstChildElement("B")->QueryDoubleText(&b);
-    e->FirstChildElement("weight")->QueryDoubleText(&wght);
+      e->FirstChildElement("R")->QueryDoubleText(&r);
+      e->FirstChildElement("G")->QueryDoubleText(&g);
+      e->FirstChildElement("B")->QueryDoubleText(&b);
+      e->FirstChildElement("weight")->QueryDoubleText(&wght);
 
-    cl(0) = r;
-    cl(1) = g;
-    cl(2) = b;
+      cl(0) = r;
+      cl(1) = g;
+      cl(2) = b;
 
-    color.name = name;
-    color.color = cl;
-    color.weight = wght;
+      label.name = name;
+      label.color = cl;
+      label.weight = wght;
 
-    existingColors.push_back(color);
+      existingLabels.push_back(label);
+    }
+  }else{
+    printer::printRed("Could not open or find labels.xml file");
   }
 }
