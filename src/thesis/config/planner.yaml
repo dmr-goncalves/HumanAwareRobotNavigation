@@ -1,9 +1,6 @@
 controller_frequency: 5.0
 recovery_behaviour_enabled: true
-<<<<<<< HEAD
 planner_frequency: 1.0
-=======
->>>>>>> 7aeab9ad168a6bdf20472ecd5beeaea7adac1bd0
 
 NavfnROS:
   allow_unknown: true # Specifies whether or not to allow navfn to create plans that traverse unknown space.
@@ -33,13 +30,8 @@ TrajectoryPlannerROS:
   sim_time: 2.0
   sim_granularity: 0.02
   angular_sim_granularity: 0.02
-<<<<<<< HEAD
   vx_samples: 6
   vtheta_samples: 20
-=======
-  vx_samples: 14
-  vtheta_samples: 30
->>>>>>> 7aeab9ad168a6bdf20472ecd5beeaea7adac1bd0
   controller_frequency: 20.0
 
   # Trajectory scoring parameters
