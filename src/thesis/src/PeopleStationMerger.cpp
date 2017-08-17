@@ -32,7 +32,7 @@ PeopleStationMerger::PeopleStationMerger():m_nd("~"){
   left = 0.5 * M_PI ;
   right = 1.5 * M_PI;
 
-  PeopleStationMerger::getColors();
+  PeopleStationMerger::getLabels();
 }
 
 void PeopleStationMerger::run(){
@@ -141,7 +141,7 @@ STriple PeopleStationMerger::getWeight(float x, float y){
   double peopleCrosswalkRadius = 2.0;
 
   for(int i = 0; i < existingLabels.size(); i++){
-    if(!existingLabels.at(i).name.compare("crosswalk")){
+    if(!existingLabels.at(i).type.compare("crosswalk")){
      crosswalkIndex = i;
    }
  }
@@ -188,7 +188,7 @@ if(crosswalkIndex > -1 && existingLabels.size() > 1){
 
       if(colorVectorAnotherBase == existingLabels.at(x).color && x != crosswalkIndex){
         resultTriple.first = existingLabels.at(x).weight;
-        resultTriple.second = existingLabels.at(x).name;        
+        resultTriple.second = existingLabels.at(x).type;        
         return resultTriple;
       }
     }
@@ -286,32 +286,32 @@ void PeopleStationMerger::findStations(){
   DS.header.stamp = ros::Time::now();
   DS.header.frame_id = "stations";
 
-  XMLDocument doc;
+  XMLDocument stationsDoc;
 
-  std::string uri = ros::package::getPath("thesis") + "/misc/stations.xml";
+  std::string stationsURI = ros::package::getPath("thesis") + "/misc/stations.xml";
 
-  if(!doc.LoadFile(uri.c_str())){
+  if(!stationsDoc.LoadFile(stationsURI.c_str())){
 
-    XMLElement* stations_location_library = doc.FirstChildElement("stations_location_library");
+    XMLElement* stations = stationsDoc.FirstChildElement("stations");
 
-    for(XMLElement* e = stations_location_library->FirstChildElement("station"); e != NULL; e = e->NextSiblingElement("station") ){
+    for(XMLElement* e = stations->FirstChildElement("station"); e != NULL; e = e->NextSiblingElement("station")){
 
       thesis::DetectedStation ds;
 
-      const char* color = e->Attribute("category");
+      const char* type = e->Attribute("type");
 
-      std::string color_(color);
+      std::string type_(type);
 
-      if(color_ == "red"){
+      if(type_ == "red"){
         ds.name = "red";
         ds.magnitude = 20;
-      }else if(color_ == "yellow"){
+      }else if(type_ == "yellow"){
         ds.name = "yellow";
         ds.magnitude = 15;
-      }else if(color_ == "blue"){
+      }else if(type_ == "blue"){
         ds.name = "blue";
         ds.magnitude = 10;
-      }else if(color_ == "green"){
+      }else if(type_ == "green"){
         ds.name = "green";
         ds.magnitude = 5;
       }
@@ -320,7 +320,7 @@ void PeopleStationMerger::findStations(){
       e->FirstChildElement("center")->FirstChildElement("y")->QueryDoubleText(&ds.center.y);
       e->FirstChildElement("center")->FirstChildElement("z")->QueryDoubleText(&ds.center.z);
 
-      const char* orientation = e->FirstChildElement("peopleWalk")->GetText();
+      const char* orientation = e->FirstChildElement("crosswalk")->GetText();
 
       std::string orientation_(orientation);
 
@@ -343,18 +343,19 @@ void PeopleStationMerger::findStations(){
   }
 }
 
-void PeopleStationMerger::getColors(){
+void PeopleStationMerger::getLabels(){
 
-  XMLDocument doc;
+  XMLDocument labelsDoc;
 
-  std::string uri = ros::package::getPath("thesis") + "/misc/labels.xml";
+  std::string labelsURI = ros::package::getPath("thesis") + "/misc/labels.xml";
 
-  if(!doc.LoadFile(uri.c_str())){
+  if(!labelsDoc.LoadFile(labelsURI.c_str())){
 
-    XMLElement* labels_library = doc.FirstChildElement("labels_library");
+    XMLElement* labels = labelsDoc.FirstChildElement("labels");
 
-    for(XMLElement* e = labels_library->FirstChildElement("label"); e != NULL; e = e->NextSiblingElement("label") ){
-      const char* name = e->Attribute("category");
+    for(XMLElement* e = labels->FirstChildElement("label"); e != NULL; e = e->NextSiblingElement("label")){
+
+      const char* type = e->Attribute("type");
 
       Eigen::Vector3i cl;
       double r,g,b, wght;
@@ -363,12 +364,12 @@ void PeopleStationMerger::getColors(){
       e->FirstChildElement("G")->QueryDoubleText(&g);
       e->FirstChildElement("B")->QueryDoubleText(&b);
       e->FirstChildElement("weight")->QueryDoubleText(&wght);
-
+      
       cl(0) = r;
       cl(1) = g;
       cl(2) = b;
 
-      label.name = name;
+      label.type = type;
       label.color = cl;
       label.weight = wght;
 

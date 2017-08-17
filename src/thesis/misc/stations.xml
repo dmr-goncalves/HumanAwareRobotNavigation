@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<stations_location_library>
-  <station category='red'>
+<stations>
+  <station type='red'>
     <center>
       <x>2.0</x>
       <y>-3.3</y>
       <z>0.0</z>
     </center>
-    <peopleWalk>left</peopleWalk>
+    <crosswalk>left</crosswalk>
   </station>
-  <station category='green'>
+  <station type='green'>
     <center>
       <x>4.4</x>
       <y>-3.3</y>
       <z>0.0</z>
     </center>
-    <peopleWalk>left</peopleWalk>
+    <crosswalk>left</crosswalk>
   </station>
-  <station category='blue'>
+  <station type='blue'>
     <center>
       <x>6.4</x>
       <y>-3.3</y>
       <z>0.0</z>
     </center>
-    <peopleWalk>left</peopleWalk>
+    <crosswalk>left</crosswalk>
   </station>
-</stations_location_library>
+</stations>

@@ -34,7 +34,7 @@ using namespace grid_map;
 using namespace tinyxml2;
 
 typedef struct label{
-  std::string name;
+  std::string type;
   Eigen::Vector3i color;
   double weight;
 } SLabel;
@@ -90,6 +90,6 @@ private:
   STriple getWeight(float x, float y);
   void gridMapConstruction();
   void findStations();
-  void getColors();
+  void getLabels();
 };
 /* _thesis_HPP__ */
