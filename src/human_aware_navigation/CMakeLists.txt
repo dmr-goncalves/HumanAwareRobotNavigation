@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(thesis)
+project(human_aware_navigation)
 
 add_definitions(-std=c++11)
 
@@ -8,7 +8,6 @@ find_package(catkin REQUIRED COMPONENTS
 	roscpp
 	roslib
 	grid_map_msgs
-	spencer_tracking_msgs
 	grid_map_ros
 	grid_map_core
 	rospy
@@ -31,7 +30,7 @@ add_message_files(FILES
 ## Generate added messages and services with any dependencies listed here
 generate_messages(DEPENDENCIES std_msgs geometry_msgs)
 
-catkin_package(INCLUDE_DIRS include LIBRARIES thesis CATKIN_DEPENDS roscpp message_runtime)
+catkin_package(INCLUDE_DIRS include LIBRARIES human_aware_navigation CATKIN_DEPENDS roscpp message_runtime)
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations

@@ -10,7 +10,7 @@
 #include <dynamic_reconfigure/server.h>
 #include <stations_layer/StationLayerConfig.h>
 
-#include <thesis/DetectedStations.h>
+#include <human_aware_navigation/DetectedStations.h>
 
 #include <math.h>
 
@@ -34,10 +34,10 @@ namespace stations_layer_namespace{
     virtual void updateCosts(costmap_2d::Costmap2D& master_grid, int min_i, int min_j, int max_i, int max_j);
 
   private:
-    void stationCallback(const thesis::DetectedStations& stations_);
+    void stationCallback(const human_aware_navigation::DetectedStations& stations_);
 
     ros::Subscriber stations_sub_;
-    thesis::DetectedStations stations_list_;
+    human_aware_navigation::DetectedStations stations_list_;
 
     void configure(stations_layer::StationLayerConfig &config, uint32_t level);
 

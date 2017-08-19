@@ -38,10 +38,10 @@ namespace social_navigation_layers
 
   void ProxemicLayer::updateBoundsFromPeople(double* min_x, double* min_y, double* max_x, double* max_y)
   {
-    std::list<thesis::DetectedPerson>::iterator p_it;
+    std::list<human_aware_navigation::DetectedPerson>::iterator p_it;
 
     for(p_it = transformed_people_.begin(); p_it != transformed_people_.end(); ++p_it){
-      thesis::DetectedPerson person = *p_it;
+      human_aware_navigation::DetectedPerson person = *p_it;
 
       double mag = sqrt(pow(person.velocity.x,2) + pow(person.velocity.y, 2));
       double factor = 1.0 + mag * factor_;
@@ -67,21 +67,22 @@ namespace social_navigation_layers
     if( cutoff_ >= amplitude_)
       return;
 
-    std::list<thesis::DetectedPerson>::iterator p_it; //Iterator for detected persons list
+    std::list<human_aware_navigation::DetectedPerson>::iterator p_it; //Iterator for detected persons list
     int i = 0;
 
     costmap_2d::Costmap2D* costmap = layered_costmap_->getCostmap();
     double res = costmap->getResolution();
 
     for(p_it = transformed_people_.begin(), i = 0; p_it != transformed_people_.end(), i < people_list_.people.size(); ++p_it, ++i){
-      thesis::DetectedPerson person = *p_it;
-      thesis::DetectedPerson personCompleteInformation = people_list_.people.at(i);
+      human_aware_navigation::DetectedPerson person = *p_it;
+      human_aware_navigation::DetectedPerson personCompleteInformation = people_list_.people.at(i);
 
 
       double angle = atan2(person.velocity.y, person.velocity.x); // Detected Person Orientation
       double mag = sqrt(pow(person.velocity.x,2) + pow(person.velocity.y, 2)); // A line of mag magnitude, i.e, length
 
       mag = personCompleteInformation.weight;
+      angle = personCompleteInformation.angle;
 
       double factor = 1.0 + mag * factor_; //factor_ -> Factor to scale the velocity
       double base = get_radius(cutoff_, amplitude_, covar_);

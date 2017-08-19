@@ -28,7 +28,7 @@ obstacles_layer:
   laser: {data_type: LaserScan, clearing: true, marking: true, topic: scan}
 
 inflation:
-  inflation_radius: 0.5
-  cost_scaling_factor: 1.0
+  inflation_radius: 1.75
+  cost_scaling_factor: 2.58
 
       

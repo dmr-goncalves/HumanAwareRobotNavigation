@@ -17,7 +17,7 @@ namespace social_navigation_layers
     people_sub_ = nh.subscribe("/people", 1, &SocialLayer::peopleCallback, this);
   }
 
-  void SocialLayer::peopleCallback(const thesis::DetectedPeople& people) {
+  void SocialLayer::peopleCallback(const human_aware_navigation::DetectedPeople& people) {
     boost::recursive_mutex::scoped_lock lock(lock_);
     people_list_ = people;
   }
@@ -30,8 +30,8 @@ namespace social_navigation_layers
     transformed_people_.clear();
 
     for(unsigned int i=0; i<people_list_.people.size(); i++){
-      thesis::DetectedPerson& person = people_list_.people[i];
-      thesis::DetectedPerson tpt;
+      human_aware_navigation::DetectedPerson& person = people_list_.people[i];
+      human_aware_navigation::DetectedPerson tpt;
       geometry_msgs::PointStamped pt, opt;
 
       try{

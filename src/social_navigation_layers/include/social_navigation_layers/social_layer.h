@@ -3,7 +3,7 @@
 #include <ros/ros.h>
 #include <costmap_2d/layer.h>
 #include <costmap_2d/layered_costmap.h>
-#include <thesis/DetectedPeople.h>
+#include <human_aware_navigation/DetectedPeople.h>
 #include <boost/thread.hpp>
 
 namespace social_navigation_layers
@@ -22,10 +22,10 @@ namespace social_navigation_layers
       bool isDiscretized() { return false; }
 
     protected:
-      void peopleCallback(const thesis::DetectedPeople& people);
+      void peopleCallback(const human_aware_navigation::DetectedPeople& people);
       ros::Subscriber people_sub_;
-      thesis::DetectedPeople people_list_;
-      std::list<thesis::DetectedPerson> transformed_people_;
+      human_aware_navigation::DetectedPeople people_list_;
+      std::list<human_aware_navigation::DetectedPerson> transformed_people_;
       ros::Duration people_keep_time_;
       boost::recursive_mutex lock_;
       tf::TransformListener tf_;

@@ -1,6 +1,6 @@
 /***************************** Made by Duarte Gonçalves *********************************/
 
-#include "thesis/PeopleStationMerger.hpp"
+#include "human_aware_navigation/PeopleStationMerger.hpp"
 
 PeopleStationMerger::PeopleStationMerger():m_nd("~"){
 
@@ -10,9 +10,9 @@ PeopleStationMerger::PeopleStationMerger():m_nd("~"){
   m_sub_Map = m_nd.subscribe("/map", 1, &PeopleStationMerger::mapClbk, this);
   m_sub_AMCL = m_nd.subscribe("/amcl_pose", 1, &PeopleStationMerger::amclClbk, this);
 
-  m_pub_People = m_nd.advertise<thesis::DetectedPeople>("/people", 1, true);
+  m_pub_People = m_nd.advertise<human_aware_navigation::DetectedPeople>("/people", 1, true);
   m_pub_GridMap = m_nd.advertise<grid_map_msgs::GridMap>("/grid_map", 1, true);
-  m_pub_Stations = m_nd.advertise<thesis::DetectedStations>("/stations", 1, true);
+  m_pub_Stations = m_nd.advertise<human_aware_navigation::DetectedStations>("/stations", 1, true);
 
   image_transport::ImageTransport it(m_nd);
   m_pub_Image = it.advertise("/labeledMapImage", 1);
@@ -41,7 +41,7 @@ void PeopleStationMerger::run(){
 
 void PeopleStationMerger::detectedPeopleClbk(const spencer_tracking_msgs::DetectedPersons DP){
 
-  thesis::DetectedPeople dpplAux;
+  human_aware_navigation::DetectedPeople dpplAux;
   dpplAux.header.frame_id = "people";
 
   for(int x = 0; x < DP.detections.size(); x++){
@@ -50,24 +50,17 @@ void PeopleStationMerger::detectedPeopleClbk(const spencer_tracking_msgs::Detect
 
     ss << DP.detections.at(x).detection_id;//add number to the stream
 
-    thesis::DetectedPerson dp;
+    human_aware_navigation::DetectedPerson dp;
 
     dp.name = ss.str();
     dp.position = DP.detections.at(x).pose.pose.position;
     dp.confidence = DP.detections.at(x).confidence;
 
-    if(dp.velocity.x == 0 && dp.velocity.y == 0){
-      dp.weight = 0;
-      dp.workstation = "Null Velocity";
-    }else{
+    STriple dpTriple = getWeight(-dp.position.x, -dp.position.y);
 
-      STriple dpTriple = getWeight(-dp.position.x, -dp.position.y);
-
-      dp.weight = dpTriple.first;
-      dp.workstation = dpTriple.second;
-      dp.angle = dpTriple.third;
-    }
-    
+    dp.weight = dpTriple.first;
+    dp.workstation = dpTriple.second;
+    dp.angle = dpTriple.third;   
 
     dpplAux.people.push_back(dp);
   }
@@ -90,15 +83,13 @@ void PeopleStationMerger::trackedPeopleClbk(const spencer_tracking_msgs::Tracked
           dppl.people.at(c).velocity.z = TP.tracks.at(x).twist.twist.linear.z;
           dppl.people.at(c).position = TP.tracks.at(x).pose.pose.position;
 
-          if(dppl.people.at(c).velocity.x == 0 && dppl.people.at(c).velocity.y == 0){
-            dppl.people.at(c).weight = 0;
-            dppl.people.at(c).workstation = "Null Velocity";
-          }else{
-            STriple dpTriple = getWeight(-dppl.people.at(c).position.x, -dppl.people.at(c).position.y);
 
-            dppl.people.at(c).weight = dpTriple.first;
-            dppl.people.at(c).workstation = dpTriple.second;
-          }
+          STriple dpTriple = getWeight(-dppl.people.at(c).position.x, -dppl.people.at(c).position.y);
+
+          dppl.people.at(c).weight = dpTriple.first;
+          dppl.people.at(c).workstation = dpTriple.second;
+          dppl.people.at(c).angle = dpTriple.third;
+          
           c = dppl.people.size();
         }
       }
@@ -188,7 +179,8 @@ if(crosswalkIndex > -1 && existingLabels.size() > 1){
 
       if(colorVectorAnotherBase == existingLabels.at(x).color && x != crosswalkIndex){
         resultTriple.first = existingLabels.at(x).weight;
-        resultTriple.second = existingLabels.at(x).type;        
+        resultTriple.second = existingLabels.at(x).type;     
+        resultTriple.third = existingLabels.at(x).side;   
         return resultTriple;
       }
     }
@@ -221,7 +213,7 @@ if(crosswalkIndex > -1 && existingLabels.size() > 1){
 
 void PeopleStationMerger::gridMapConstruction(){
 
-  std::string uri = ros::package::getPath("thesis") + "/misc/myLabeledMapWithCrosswalk.png";
+  std::string uri = ros::package::getPath("human_aware_navigation") + "/misc/myLabeledMapWithCrosswalk.png";
 
   cv::Mat image = cv::imread(uri.c_str(), CV_LOAD_IMAGE_COLOR );
 
@@ -281,14 +273,14 @@ double PeopleStationMerger::getVelocity(double finalPosition, double initialPosi
 
 void PeopleStationMerger::findStations(){
 
-  thesis::DetectedStations DS;
+  human_aware_navigation::DetectedStations DS;
 
   DS.header.stamp = ros::Time::now();
   DS.header.frame_id = "stations";
 
   XMLDocument stationsDoc;
 
-  std::string stationsURI = ros::package::getPath("thesis") + "/misc/stations.xml";
+  std::string stationsURI = ros::package::getPath("human_aware_navigation") + "/misc/stations.xml";
 
   if(!stationsDoc.LoadFile(stationsURI.c_str())){
 
@@ -296,7 +288,7 @@ void PeopleStationMerger::findStations(){
 
     for(XMLElement* e = stations->FirstChildElement("station"); e != NULL; e = e->NextSiblingElement("station")){
 
-      thesis::DetectedStation ds;
+      human_aware_navigation::DetectedStation ds;
 
       const char* type = e->Attribute("type");
 
@@ -347,7 +339,7 @@ void PeopleStationMerger::getLabels(){
 
   XMLDocument labelsDoc;
 
-  std::string labelsURI = ros::package::getPath("thesis") + "/misc/labels.xml";
+  std::string labelsURI = ros::package::getPath("human_aware_navigation") + "/misc/labels.xml";
 
   if(!labelsDoc.LoadFile(labelsURI.c_str())){
 
@@ -359,12 +351,34 @@ void PeopleStationMerger::getLabels(){
 
       Eigen::Vector3i cl;
       double r,g,b, wght;
+      std::string side = "";
 
       e->FirstChildElement("R")->QueryDoubleText(&r);
       e->FirstChildElement("G")->QueryDoubleText(&g);
       e->FirstChildElement("B")->QueryDoubleText(&b);
-      e->FirstChildElement("weight")->QueryDoubleText(&wght);
       
+      if(e->FirstChildElement("weight") != NULL){
+        e->FirstChildElement("weight")->QueryDoubleText(&wght);
+      }else{
+        wght = 0.0;
+      }
+      
+      if(e->FirstChildElement("side") != NULL){
+        side = e->FirstChildElement("side")->GetText();
+      }
+
+      if(side == "left"){
+        label.side = left;
+      }else if(side == "right"){
+        label.side = right;
+      }else if(side == "up"){
+        label.side = up;
+      }else if(side == "down"){
+        label.side = down;
+      }else if(side == ""){
+        label.side = 0.0;
+      }
+
       cl(0) = r;
       cl(1) = g;
       cl(2) = b;

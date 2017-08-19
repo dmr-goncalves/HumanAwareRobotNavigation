@@ -1,6 +1,6 @@
 /***************************** Made by Duarte Gonçalves *********************************/
 
-#include "thesis/PeopleStationMerger.hpp"
+#include "human_aware_navigation/PeopleStationMerger.hpp"
 
 
 int main( int argc, char** argv )

@@ -41,7 +41,7 @@ namespace stations_layer_namespace
     first_time_ = true;
   }
 
-  void StationLayer::stationCallback(const thesis::DetectedStations& stations) {
+  void StationLayer::stationCallback(const human_aware_navigation::DetectedStations& stations) {
     stations_list_ = stations;
   }
 
@@ -58,7 +58,7 @@ namespace stations_layer_namespace
   void StationLayer::updateBounds(double origin_x, double origin_y, double origin_z, double* min_x, double* min_y, double* max_x, double* max_y){
 
     for(int z = 0; z < stations_list_.stations.size(); ++z){
-      thesis::DetectedStation station = stations_list_.stations.at(z);
+      human_aware_navigation::DetectedStation station = stations_list_.stations.at(z);
 
       double mag = station.magnitude;
       double factor = 1.0 + mag * factor_;
@@ -83,14 +83,14 @@ namespace stations_layer_namespace
     if( cutoff_ >= amplitude_)
       return;
 
-    std::list<thesis::DetectedStation>::iterator p_it; //Iterator for detected persons lsit
+    std::list<human_aware_navigation::DetectedStation>::iterator p_it; //Iterator for detected persons lsit
 
     costmap_2d::Costmap2D* costmap = layered_costmap_->getCostmap();
     double res = costmap->getResolution();
     int i = 0;
 
     for(i = 0; i < stations_list_.stations.size(); i++){
-      thesis::DetectedStation station = stations_list_.stations.at(i);
+      human_aware_navigation::DetectedStation station = stations_list_.stations.at(i);
 
       double angle = station.angle; // Detected Person Orientation
       double mag = station.magnitude; // A line of mag magnitude, i.e, length

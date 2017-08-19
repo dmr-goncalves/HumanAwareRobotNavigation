@@ -8,10 +8,10 @@
 
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
 
-#include <thesis/DetectedPeople.h>
-#include <thesis/DetectedPerson.h>
-#include <thesis/DetectedStations.h>
-#include <thesis/DetectedStation.h>
+#include <human_aware_navigation/DetectedPeople.h>
+#include <human_aware_navigation/DetectedPerson.h>
+#include <human_aware_navigation/DetectedStations.h>
+#include <human_aware_navigation/DetectedStation.h>
 
 #include <spencer_tracking_msgs/DetectedPersons.h>
 #include <spencer_tracking_msgs/TrackedPersons.h>
@@ -34,6 +34,7 @@ using namespace grid_map;
 using namespace tinyxml2;
 
 typedef struct label{
+  double side;
   std::string type;
   Eigen::Vector3i color;
   double weight;
@@ -73,8 +74,8 @@ private:
 
   geometry_msgs::PoseWithCovarianceStamped      robotLocalization;
 
-  thesis::DetectedPeople                        dppl;
-  thesis::DetectedStations                      DS;
+  human_aware_navigation::DetectedPeople        dppl;
+  human_aware_navigation::DetectedStations      DS;
 
   SLabel label;
   std::vector<SLabel> existingLabels;
@@ -92,4 +93,4 @@ private:
   void findStations();
   void getLabels();
 };
-/* _thesis_HPP__ */
+/* _human_aware_navigation_HPP__ */

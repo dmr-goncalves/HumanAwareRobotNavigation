@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>thesis</name>
+  <name>human_aware_navigation</name>
   <version>0.0.1</version>
-  <description>The thesis package</description>
+  <description>The human_aware_navigation package</description>
 
   <author email="dmr.goncalves@campus.fct.unl.pt">Duarte Gonçalves!!</author>
   <maintainer email="dmr.goncalves@campus.fct.unl.pt">Duarte Gonçalves!!</maintainer>

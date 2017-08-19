@@ -19,8 +19,8 @@ namespace social_navigation_layers
       transformed_people_.clear();
 
       for(unsigned int i=0; i<people_list_.people.size(); i++){
-        thesis::DetectedPerson& person = people_list_.people[i];
-        thesis::DetectedPerson tpt;
+        human_aware_navigation::DetectedPerson& person = people_list_.people[i];
+        human_aware_navigation::DetectedPerson tpt;
         geometry_msgs::PointStamped pt, opt;
 
         try{
@@ -79,12 +79,12 @@ namespace social_navigation_layers
       if( cutoff_ >= amplitude_)
       return;
 
-      std::list<thesis::DetectedPerson>::iterator p_it;
+      std::list<human_aware_navigation::DetectedPerson>::iterator p_it;
       costmap_2d::Costmap2D* costmap = layered_costmap_->getCostmap();
       double res = costmap->getResolution();
 
       for(p_it = transformed_people_.begin(); p_it != transformed_people_.end(); ++p_it){
-        thesis::DetectedPerson person = *p_it;
+        human_aware_navigation::DetectedPerson person = *p_it;
         
         double angle = -atan2(person.velocity.x, person.velocity.y)+1.51;
 

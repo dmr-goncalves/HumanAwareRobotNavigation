@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+
+<launch>
+	<!--Launch RVIZ-->
+	<node name="robotVisualisation" pkg="rviz" type="rviz" args="-d $(find human_aware_navigation)/rviz/thesis.rviz" output="screen"  />
+</launch>
