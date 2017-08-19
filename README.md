@@ -9,7 +9,7 @@ This is a ROS package that joins people detection into the navigation process.
 
 ### Instalation
 
-* Download workspace.
+* Download the packages in src folder.
 
 * Install dependencies specified in grid_map and spencer_people_tracking packages.
 
@@ -77,12 +77,12 @@ This is a ROS package that joins people detection into the navigation process.
 
 * Launch the simulated world and jackal descriptions and controls.
 
-        roslaunch thesis world.launch
+        roslaunch human_aware_navigation world.launch
 
 * Launch mapping. 
 
-        roslaunch thesis mapping.launch
+        roslaunch human_aware_navigation mapping.launch
 
 * Launch navigation, people detection and this thesis middleware.
 
-        roslaunch thesis thesis_bringup.launch
+        roslaunch human_aware_navigation bringup.launch
