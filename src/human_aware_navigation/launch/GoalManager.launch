@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+
+<launch>
+	<node name="GoalManager" pkg="human_aware_navigation" type="GoalManager_Node" output="screen"/>
+</launch>

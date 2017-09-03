@@ -78,7 +78,7 @@ private:
   human_aware_navigation::DetectedStations      DS;
 
   SLabel label;
-  std::vector<SLabel> existingLabels;
+  std::vector<SLabel>                           existingLabels;
 
   double left, right, down, up;
 

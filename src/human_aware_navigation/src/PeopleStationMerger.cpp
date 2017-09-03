@@ -213,7 +213,7 @@ if(crosswalkIndex > -1 && existingLabels.size() > 1){
 
 void PeopleStationMerger::gridMapConstruction(){
 
-  std::string uri = ros::package::getPath("human_aware_navigation") + "/misc/myLabeledMapWithCrosswalk.png";
+  std::string uri = ros::package::getPath("human_aware_navigation") + "/misc/realExperienceLabeledMap.png";
 
   cv::Mat image = cv::imread(uri.c_str(), CV_LOAD_IMAGE_COLOR );
 
@@ -280,7 +280,7 @@ void PeopleStationMerger::findStations(){
 
   XMLDocument stationsDoc;
 
-  std::string stationsURI = ros::package::getPath("human_aware_navigation") + "/misc/stations.xml";
+  std::string stationsURI = ros::package::getPath("human_aware_navigation") + "/misc/stationsExample.xml";
 
   if(!stationsDoc.LoadFile(stationsURI.c_str())){
 

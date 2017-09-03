@@ -2,5 +2,5 @@
 
 <launch>
 	<!--Launch RVIZ-->
-	<node name="robotVisualisation" pkg="rviz" type="rviz" args="-d $(find human_aware_navigation)/rviz/thesis.rviz" output="screen"  />
+	<node name="robotVisualisation" pkg="rviz" type="rviz" args="-d $(find human_aware_navigation)/rviz/human_aware_navigation.rviz" output="screen"  />
 </launch>
