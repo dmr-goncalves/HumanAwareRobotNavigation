@@ -27,7 +27,8 @@ add_message_files(FILES
 	DetectedPeople.msg
 	DetectedPerson.msg
 	DetectedStations.msg
-	DetectedStation.msg)
+	DetectedStation.msg
+	TaskFinished.msg)
 
 ## Generate services in the 'srv' folder
  add_service_files(FILES 
@@ -43,17 +44,20 @@ catkin_package(INCLUDE_DIRS include LIBRARIES human_aware_navigation CATKIN_DEPE
 include_directories(include ${catkin_INCLUDE_DIRS} ${Eigen3_INCLUDE_DIRS} ${TinyXML2_INCLUDE_DIRS})
 
 ## Declare a C++ executable
-add_executable(PeopleStationMerger_Node src/PeopleStationMerger_Node.cpp src/PeopleStationMerger.cpp)
-add_executable(DistanceMeasurer_Node src/DistanceMeasurer_Node.cpp src/DistanceMeasurer.cpp)
-add_executable(GoalManager_Node src/GoalManager_Node.cpp src/GoalManager.cpp)
+add_executable(PeopleStationMerger src/PeopleStationMerger_Node.cpp src/PeopleStationMerger.cpp)
+add_executable(DistanceMeasurer src/DistanceMeasurer_Node.cpp src/DistanceMeasurer.cpp)
+add_executable(GoalManager src/GoalManager_Node.cpp src/GoalManager.cpp)
+add_executable(KeyboardManager src/KeyboardManager_Node.cpp src/KeyboardManager.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-add_dependencies(PeopleStationMerger_Node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(DistanceMeasurer_Node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(GoalManager_Node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(PeopleStationMerger ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(DistanceMeasurer ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(GoalManager ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(KeyboardManager ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(PeopleStationMerger_Node ${catkin_LIBRARIES} ${TinyXML2_LIBRARIES})
-target_link_libraries(DistanceMeasurer_Node ${catkin_LIBRARIES})
-target_link_libraries(GoalManager_Node ${catkin_LIBRARIES})
+target_link_libraries(PeopleStationMerger ${catkin_LIBRARIES} ${TinyXML2_LIBRARIES})
+target_link_libraries(DistanceMeasurer ${catkin_LIBRARIES})
+target_link_libraries(GoalManager ${catkin_LIBRARIES})
+target_link_libraries(KeyboardManager ${catkin_LIBRARIES})

@@ -5,7 +5,7 @@
 
 int main( int argc, char** argv )
 {
-  ros::init( argc, argv, "PeopleStationMerger_Node");
+  ros::init( argc, argv, "PeopleStationMerger");
 
   PeopleStationMerger PSM;
 

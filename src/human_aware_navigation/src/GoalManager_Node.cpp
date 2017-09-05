@@ -5,11 +5,11 @@
 
 int main( int argc, char** argv )
 {
-  ros::init( argc, argv, "GoalManager_Node");
+  ros::init( argc, argv, "GoalManager");
 
   GoalManager GM;
 
-  GM.sendGoal();
+  GM.run();
 
   return 0;
 }

@@ -219,12 +219,14 @@ void PeopleStationMerger::gridMapConstruction(){
 
   if(!image.data )// Check for invalid input
   {
-    printer::printRed("Could not open or find the image") ;
+    printer::printRed("Could not open or find the image");
+    ros::shutdown();
   }
 
   if (image.empty())
   {
     printer::printRed("Error : Image cannot be loaded..!!");
+    ros::shutdown();
   }
 
   cv::cvtColor(image, image, CV_BGR2RGB);
@@ -332,6 +334,7 @@ void PeopleStationMerger::findStations(){
     m_pub_Stations.publish(DS);
   }else{
     printer::printRed("Could not open or find stations.xml file");
+    ros::shutdown();
   }
 }
 
@@ -391,5 +394,6 @@ void PeopleStationMerger::getLabels(){
     }
   }else{
     printer::printRed("Could not open or find labels.xml file");
+    ros::shutdown();
   }
 }

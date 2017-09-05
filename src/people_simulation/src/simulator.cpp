@@ -5,15 +5,15 @@
 simulator::simulator():m_nd("~"){
   //Configurationd of the Subsribers and Publishers topics and callbacks
   m_pub_People = m_nd.advertise<spencer_tracking_msgs::DetectedPersons>("/spencer/perception_internal/detected_persons/rgbd_front_top/upper_body", 1);
-  x1 = 2;
-  y1 = -3.3;
-  x2 = 4.4;
+  x1 = 6;
+  y1 = -5;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  5;
+  /*x2 = 4.4;
   y2 = -3.3;
   x3 = 6.4;
-  y3 = -3.3;
+  y3 = -3.3*/;
 }
 
-void simulator::run(){
+void simulator::run(){                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
 
   ros::Rate loop_rate(0.60);
 
@@ -32,7 +32,7 @@ void simulator::run(){
 
     DPS.detections.push_back(DP1);
 
-    spencer_tracking_msgs::DetectedPerson DP2;
+    /*spencer_tracking_msgs::DetectedPerson DP2;
 
     DP2.detection_id = 2;
 
@@ -54,7 +54,7 @@ void simulator::run(){
 
     DP3.confidence = 1;
 
-    DPS.detections.push_back(DP3);
+    DPS.detections.push_back(DP3);*/
 
     DPS.header.frame_id = "people_simulator";
     DPS.header.stamp = ros::Time::now();

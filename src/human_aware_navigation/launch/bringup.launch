@@ -2,11 +2,11 @@
 
 <launch>
 
-	<!--include file="$(find human_aware_navigation)/launch/getMap.launch" /-->
+	<include file="$(find human_aware_navigation)/launch/getMap.launch" />
 
-	<include file="$(find human_aware_navigation)/launch/mapping.launch">
+	<!--include file="$(find human_aware_navigation)/launch/mapping.launch">
 		<arg name="use_simulation_topics" value="true" />
-	</include>
+	</include-->
 
 	<include file="$(find human_aware_navigation)/launch/transformers.launch" />
 
@@ -14,9 +14,11 @@
 		<arg name="use_simulation_topics" value="true"/>
 	</include>
 
-	<include file="$(find human_aware_navigation)/launch/robotLocalization.launch" >
+	<!--include file="$(find human_aware_navigation)/launch/robotLocalization.launch" >
 		<arg name="use_simulation_topics" value="true"/>
-	</include>
+	</include-->
+
+	<include file="$(find human_aware_navigation)/launch/ekf.launch" />
 
 	<!--include file="$(find human_aware_navigation)/launch/peopleDetection.launch" >
 		<arg name="height_above_ground" value="1.0"/>
@@ -26,13 +28,14 @@
 
 	<include file="$(find human_aware_navigation)/launch/navigation.launch"> 
 		<arg name="use_simulation_topics" value="true"/>
+		<arg name="amcl" value="true"/>
 	</include>
 
-	<!--include file="$(find human_aware_navigation)/launch/peopleStationMerger.launch" /-->
+	<include file="$(find human_aware_navigation)/launch/peopleStationMerger.launch" />
 
-	<include file="$(find human_aware_navigation)/launch/rviz.launch"/>
+	<!--include file="$(find human_aware_navigation)/launch/rviz.launch"/-->
 
-	<!--include file="$(find human_aware_navigation)/launch/peopleSimulator.launch" /-->
+	<include file="$(find human_aware_navigation)/launch/peopleSimulator.launch" />
 
 	<include file="$(find human_aware_navigation)/launch/DistanceMeasurer.launch" />
 </launch>

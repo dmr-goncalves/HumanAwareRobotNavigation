@@ -3,7 +3,7 @@
 <launch>
   <param name="use_sim_time" value="true" />
 
-  <arg name="world_name" default="$(find human_aware_navigation)/worlds/empty.world"/>
+  <arg name="world_name" default="$(find human_aware_navigation)/worlds/realExperience.world"/>
 
   <!-- start gazebo server-->
   <node name="gazebo" pkg="gazebo_ros" type="gzserver" respawn="false" output="screen"
@@ -14,7 +14,7 @@
 
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
 
-  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model husky" />
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model husky -Y 3.14159265359" />
 
   <include file="$(find husky_control)/launch/control.launch" />
 </launch>

@@ -5,8 +5,8 @@
 DistanceMeasurer::DistanceMeasurer(){
 	
 	distanceService = m_nd.advertiseService("/get_distance", &DistanceMeasurer::getPathDistance, this);
-	m_sub_GlobalPlan = m_nd.subscribe("/NavigationNode/TrajectoryPlannerROS/global_plan", 1, &DistanceMeasurer::globalPlanClbk, this);
-	m_sub_RobotPose = m_nd.subscribe("/odometry/filtered", 1, &DistanceMeasurer::robotPoseClbk, this);
+	m_sub_GlobalPlan = m_nd.subscribe("/global_plan", 1, &DistanceMeasurer::globalPlanClbk, this);
+	m_sub_RobotPose = m_nd.subscribe("/odometry", 1, &DistanceMeasurer::robotPoseClbk, this);
 
 	total_distance = 0.0;
 	global_plan_distance = 0.0;

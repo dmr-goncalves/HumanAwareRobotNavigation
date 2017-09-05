@@ -1,4 +1,4 @@
-image: src/human_aware_navigation/map/realExperienceMap.pgm
+image: realExperienceMap.pgm
 resolution: 0.050000
 origin: [-100.000000, -100.000000, 0.000000]
 negate: 0

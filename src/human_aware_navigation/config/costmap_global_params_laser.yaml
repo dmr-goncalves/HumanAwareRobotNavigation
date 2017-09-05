@@ -15,6 +15,6 @@ update_frequency: 1.0
 publish_frequency: 5.0
 
 plugins:
-  #- {name: proxemic_layer,            type: "social_navigation_layers::ProxemicLayer"}
+  - {name: social_layer,            type: "social_navigation_layers::ProxemicLayer"}
   - {name: obstacles_laser,           type: "costmap_2d::ObstacleLayer"}
   - {name: inflation,                 type: "costmap_2d::InflationLayer"}
