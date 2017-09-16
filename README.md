@@ -89,4 +89,4 @@ This is a ROS package that joins people detection into the navigation process.
        
 ### Important Notes
 
-* The labeled map image need to be as the examples.
+* The labeled map image need to be oriented as you want it to be read. You can see the examples for orientation.
