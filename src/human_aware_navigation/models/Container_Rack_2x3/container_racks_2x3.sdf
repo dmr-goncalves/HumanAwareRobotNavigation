@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<sdf version="1.4">
+
+  <model name="Container Racks 2x3">
+
+    <static>true</static>
+
+    <link name="link">
+
+      <pose>0 0 0 0 0 0</pose>
+
+      <collision name="racks_collision">
+        <geometry>
+          <mesh>
+            <uri>model://Container_Rack_2x3/meshes/Container_Rack_2x3.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+
+      <visual name="racks_visual">
+        <geometry>
+          <mesh>
+            <uri>model://Container_Rack_2x3/meshes/Container_Rack_2x3.dae</uri>
+          </mesh>
+        </geometry>
+        
+        <material>
+          <script>
+            <uri>model://Container_Rack_2x3/materials/scripts</uri>
+            <uri>model://Container_Rack_2x3/materials/textures</uri>
+<!--             <name>Racks/Orange</name>
+ -->          </script>
+          <!--<shader type="normal_map_object_space">
+            <normal_map>TOFAS_Normal.png</normal_map>
+          </shader>-->
+        </material> 
+      </visual>
+
+    </link>
+    
+  </model>
+</sdf>

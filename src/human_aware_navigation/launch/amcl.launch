@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<launch>
+	<!-- Launch AMCL Localization -->
+	<arg name="use_simulation_topics" default="true"/>
+
+	<remap from="scan" to="/mobile_base/sensors/laser_scan" unless="$(arg use_simulation_topics)"/>
+
+	<node name="amclLocalization" pkg="amcl" type="amcl" >
+		<param name="laser_max_range" value="4.0" if="$(arg use_simulation_topics)"/>
+	</node>
+
+
+
+</launch>

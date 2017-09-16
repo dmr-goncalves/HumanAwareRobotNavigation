@@ -1,0 +1,5 @@
+<library path="lib/libstations_layer">
+	<class type="stations_layer_namespace::StationLayer" base_class_type="costmap_2d::Layer">
+		<description>Uses station information to change the costmap</description>
+	</class>
+</library>
