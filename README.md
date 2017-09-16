@@ -86,3 +86,7 @@ This is a ROS package that joins people detection into the navigation process.
 * Launch navigation, people detection and this thesis middleware.
 
         roslaunch human_aware_navigation bringup.launch
+       
+### Important Notes
+
+* The labeled map image need to be as the examples.
