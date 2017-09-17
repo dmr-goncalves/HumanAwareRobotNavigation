@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<launch>
+	<!--Launch People Detection-->
+	<arg name="height_above_ground" default="1.6"/>
+	<arg name="dummy_transforms" default="true"/>
+
+	<include file="$(find spencer_people_tracking_launch)/launch/tracking_single_rgbd_sensor.launch">
+		<arg name="height_above_ground" value="$(arg height_above_ground)"/>
+		<arg name="dummy_transforms" value="$(arg dummy_transforms)" />
+	</include>
+	
+</launch>

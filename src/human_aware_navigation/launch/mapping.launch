@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<launch>
+	<!-- Launch Mapping -->
+
+	<arg name="use_simulation_topics" default="true" />
+	
+	<remap from="scan" to="/mobile_base/sensors/laser_scan" unless="$(arg use_simulation_topics)"/>
+
+	<node name="MappingNode" pkg="gmapping" type="slam_gmapping" output="screen"/>
+
+	<!--node name="cartographer_node" pkg="cartographer_ros" type="cartographer_node" /-->
+
+	<!-- Save Map -->
+	<!--node name="mapSaver" pkg="map_server" type="map_saver" args="-f /home/duarte/thesis_ws/src/thesis/map/myMap"/-->
+</launch>

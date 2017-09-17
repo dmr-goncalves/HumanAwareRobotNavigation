@@ -1,0 +1,20 @@
+
+material AssemblyStation/Floor
+{
+    receive_shadows on
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture concrete.png
+
+                scale 0.5 0.5
+
+                //scroll_anim 0.1 0.0
+                //wave_xform scale sine 0.0 0.7 0.0 1.0
+            }
+        }
+    }
+}

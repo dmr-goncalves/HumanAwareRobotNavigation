@@ -1,0 +1,45 @@
+odom_frame: odom
+base_link_frame: base_link
+world_frame: odom
+map_frame: map
+
+# If set to true, two_d_mode will only take x and y readings from the laser point cloud to estimate position, that is z readings are disregarded. Roll and yaw are disregarded as well. If set to false, all points from the laser point cloud are used to estimate position. 3D is more useful to detect different levels of position in the ground, while 2d while only create a planar x and y view
+two_d_mode: true
+
+frequency: 50
+
+odom0: husky_velocity_controller/odom
+imu0: imu/data
+
+# X, Y, Z
+# Roll, Pitch, Yaw 
+# X, Y, Z Velocities 
+# Roll, Pitch, Yaw Velocities 
+# X, Y, Z Accel 
+odom0_config: [true, true, false,
+               false, false, false, 
+               true, true, false, 
+               false, false, false,  
+               false, false, false] 
+            
+
+imu0_config: [false, false, false,
+              false, false, true,
+              false, false, false,
+              false, false, true,
+              false, false, false]
+              
+# Set this to true if different components (IMU, odometry, gps) are integrated to estimate position. Set to false if navsat is used
+odom0_differential: true
+imu0_differential: true
+
+imu0_remove_gravitational_acceleration: true
+
+print_diagnostics: true
+
+# Queue size when information is retrieved at the frequency rate set before
+odom0_queue_size: 10
+imu0_queue_size: 10
+
+#debug: false
+#debug_out_file: /debug/debug_ekf_localization.txt
