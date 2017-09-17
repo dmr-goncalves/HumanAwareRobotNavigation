@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-
-<launch>
-	<node name="DistanceMeasurer" pkg="human_aware_navigation" type="DistanceMeasurer">
-		<remap from="/global_plan" to="/NavigationNode/TrajectoryPlannerROS/global_plan" />
-		<remap from="/odometry" to="/odometry/filtered" />
-	</node>
-</launch>
