@@ -97,7 +97,7 @@ void PeopleStationMerger::detectedPeopleClbk(const spencer_tracking_msgs::Detect
 
       STriple dpTriple = getWeight(-dp.position.x, -dp.position.y);
 
-      dp.weight = dpTriple.first;
+      dp.weight = dpTriple.first; // meters
       dp.workstation = dpTriple.second;
       dp.angle = dpTriple.third;
 
@@ -168,8 +168,8 @@ STriple PeopleStationMerger::getWeight(float x, float y){
 
   gridMap.getPosition(index, personsCenter);
 
-  double radius = 1.0;
-  double peopleCrosswalkRadius = 15.0;
+  double radius = 1.0; // meters
+  double peopleCrosswalkRadius = 15.0; // meters
 
   if(existingLabels.size() == 0){
     resultTriple.first = 0.0;
@@ -452,7 +452,7 @@ void PeopleStationMerger::getLabels(){
 
       label.type = type;
       label.color = cl;
-      label.weight = wght;
+      label.weight = wght; // meters
 
       existingLabels.push_back(label);
     }
