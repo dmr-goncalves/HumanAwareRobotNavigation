@@ -1,0 +1,34 @@
+# Configuration options that both costmaps follow
+
+# Here we set either the footprint of the robot or the radius of the robot if it is circular
+footprint: [[-0.5, -0.33], [-0.5, 0.33], [0.5, 0.33], [0.5, -0.33]] # Huskys footprint
+
+footprint_padding: 0.01
+
+# Defines the coordinate frame the costmap should reference for the base of the robot
+robot_base_frame: base_link
+
+transform_tolerance: 0.5
+
+resolution: 0.05
+
+# Set thresholds on obstacle information put into the costmap. 
+# The "obstacle_range" parameter determines the maximum range sensor reading that will result in an obstacle being put into the costmap. which means that the robot will only update its map with information about obstacles that are within 5.0 meters of the base.
+# The "raytrace_range" parameter determines the range to which we will raytrace freespace given a sensor reading. Setting it to 6.0 meters as we have above means that the robot will attempt to clear out space in front of it up to 6.0 meters away given a sensor reading
+obstacle_range: 29.5 # Husky Range
+raytrace_range: 30.0 # Husky Range
+
+#Layer definitions
+static:
+  map_topic: /map
+  subscribe_to_updates: true
+
+obstacles_layer:
+  observation_sources: laser
+  laser: {data_type: LaserScan, clearing: true, marking: true, topic: scan}
+
+inflation:
+  inflation_radius: 1.75
+  cost_scaling_factor: 2.58
+
+      

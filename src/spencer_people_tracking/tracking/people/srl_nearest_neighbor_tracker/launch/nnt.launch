@@ -1,0 +1,74 @@
+<!--
+Launches the nearest-neighbor tracker with a set of parameters that worked well in practice.
+-->
+
+<launch>
+    <arg name="subscriber_queue_size" default="1"/>
+
+    <arg name="use_laser_shade_occlusion_manager" default="false"/>
+    <arg name="use_imm" default="false"/>
+    <arg name="imm_param_file" default="imm_CT_CV.yaml"/>
+    <arg name="use_initiation_logic" default="true"/>
+    <arg name="initiation_logic_param_file" default="logic_initiator.yaml"/>
+    <arg name="ekf_param_file" default="ekf_default.yaml"/>
+    <arg name="data_association_type" default="greedy_nearest_neighbor"/>
+    <arg name="low_confidence_observations_topic" default=""/>
+    <arg name="occlusion_param_file" default="occlusion_manager_polygon.yaml"/>
+
+
+    <node name="srl_nearest_neighbor_tracker" type="nnt_node" pkg="srl_nearest_neighbor_tracker" output="screen" clear_params="true" launch-prefix=""> <!-- launch-prefix="gdb -ex run -args " -->
+        <!-- Topic of secondary low-confidence detections that can be matched against an existing track, but not initiate a new one -->
+        <param name="additional_low_confidence_detections" value="$(arg low_confidence_observations_topic)"/>
+
+        <param name="min_distance_for_low_confidence_observations_to_tracks" value="0.5"/>
+        <param name="min_num_matches_to_allow_low_confidence_match" value="10"/>
+        <param name="max_consecutive_low_confidence_matches" value="60"/>
+        <param name="max_timestamp_difference_for_missed_observation_recovery" value="0.07"/>
+
+        <!-- Publisher and subscriber queue lengths -->
+        <param name="queue_size" value="$(arg subscriber_queue_size)"/>
+
+        <!-- Only used when publishing tracks, to take latencies into account -->
+        <param name="published_track_forward_predict_time" value="0.10"/>
+
+        <!-- Gating -->
+        <param name="max_gating_distance" value="1.0"/>
+        <param name="use_correlation_log" value="false"/>
+        
+        <!-- Data Association -->
+        <param name="data_association_type" value="$(arg data_association_type)"/>
+        
+        <!-- Occlusion handling -->
+        <rosparam file="$(find srl_nearest_neighbor_tracker)/launch/params/occlusion_manager_basic_timm.yaml" command="load" unless="$(arg use_laser_shade_occlusion_manager)" />
+        <rosparam file="$(find srl_nearest_neighbor_tracker)/launch/params/$(arg occlusion_param_file)" command="load" if="$(arg use_laser_shade_occlusion_manager)" />
+        
+        <!-- History of track states for duplicate elimination and debugging -->
+        <param name="state_history_length" value="30"/>
+
+        <!-- Duplicate track elimination -->
+        <param name="duplicate_track_num_history_entries_to_compare" value="5"/>
+        <param name="duplicate_track_num_history_entries_must_match" value="3"/>
+        <param name="duplicate_track_max_dist" value="0.15"/>
+
+        <!-- Track initiation -->
+        <rosparam file="$(find srl_nearest_neighbor_tracker)/launch/params/$(arg initiation_logic_param_file)" command="load" if="$(arg use_initiation_logic)"/>
+        <param name="use_initiation_logic" value="$(arg use_initiation_logic)"/>
+
+        <!-- General IMM filter parameters -->
+        <rosparam file="$(find srl_nearest_neighbor_tracker)/launch/params/$(arg imm_param_file)" command="load" if="$(arg use_imm)"/>
+        
+        <!-- Default Kalman filter parameters -->
+        <rosparam file="$(find srl_nearest_neighbor_tracker)/launch/params/$(arg ekf_param_file)" command="load"/>
+        
+        <!-- Override measurement noise values from detectors -->
+        <param name="overwrite_measurement_noise" value="false"/>
+        <param name="measurement_noise" value="0.05"/>
+
+        <!-- Settings to reproduce results of ICRA16 paper (disable features that were added afterwards) -->
+        <param name="logic_initiator_high_confidence_modalities" value=""/>
+        <param name="published_track_forward_predict_time" value="0.0"/>
+
+    </node>
+
+
+</launch>

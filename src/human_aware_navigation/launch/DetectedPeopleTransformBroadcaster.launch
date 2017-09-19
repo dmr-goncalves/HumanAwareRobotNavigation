@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<launch>
+	<node name="DetectedPeopleTransformer" pkg="human_aware_navigation" type="DetectedPeopleTransformBroadcaster" output="screen" required="true">
+		<remap from="detected_people" to="/spencer/perception_internal/detected_persons/rgbd_front_top/upper_body" />
+
+	</node>
+</launch>

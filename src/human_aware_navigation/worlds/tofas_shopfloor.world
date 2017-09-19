@@ -1,0 +1,574 @@
+<?xml version="1.0"?>
+
+<sdf version="1.4">
+
+    <world name="TOFAS Shopfloor Scenario">
+
+        <physics type="ode">
+            <!-- Maximum simulation time step size [default: 0.001] -->
+            <max_step_size> 0.01 </max_step_size>
+            <!-- Ratio of simulation time to real-time -->
+            <real_time_factor> 1 </real_time_factor>
+            <!-- update calls per real-time second [default: 1000] -->               
+            <real_time_update_rate> 1000 </real_time_update_rate>  
+            <!-- Gravity vector -->
+            <gravity> 0 0 -9.8 </gravity>   
+        </physics>
+
+        <scene>
+            <!-- Color of the ambient light -->
+            <ambient> 0.9 0.9 0.9 1.0 </ambient>
+            <!-- Color of the background -->
+            <background> 0.5 0.5 0.5 1.0 </background>
+
+            <!--<sky>
+                <time></time>
+                <sunrise></sunrise>
+                <sunset></sunset>
+                <clouds>
+                    <speed></speed>
+                    <direction></direction>
+                    <humidity></humidity>
+                    <mean_size></mean_size>
+                    <ambient></ambient>
+                </clouds>
+            </sky>
+            -->
+
+            <!-- Enable/disable shadows -->
+            <shadows> false </shadows>
+
+            <!-- <fog>
+                <color></color>
+                <type></type>
+                <start></start>
+                <end></end>
+                <density></density>
+            </fog> -->
+
+            <!-- Enable/disable the grid -->
+            <grid> true </grid>
+        </scene>
+
+         <!-- Light source -->
+        <light name="shopfloor_light" type="directional">
+            <pose> 70 70 20 0 0 0 </pose>
+            <cast_shadows> false </cast_shadows>
+            <!-- Diffuse light color -->
+            <diffuse> 0.5 0.5 0.5 1.0 </diffuse>
+            <!-- Specular light color -->
+            <specular> 0.2 0.2 0.2 1.0</specular>
+            <!-- Light attenuation -->
+            <attenuation> 
+                <range> 10000 </range>     <!-- Range of the light -->
+                <linear> 0.01 </linear>
+                <constant> 0.9 </constant>
+                <quadratic> 0.001 </quadratic>
+            </attenuation>
+            <!-- Direction of the light only applicable for spot and directional lights. -->
+            <direction> 0.5 0.1 -0.9 </direction>
+            <!--  Spot light parameters -->
+            <!--<spot>
+                <inner_angle></inner_angle>
+                <outer_angle></outer_angle>
+                <falloff></falloff>
+            </spot> -->
+        </light>
+
+        
+        <include> 
+            <uri> model://container_racks</uri>
+            <name> Market 1 </name>
+            <pose> 48.343 34.563 0 0 0 -1.57079632679 </pose>
+        </include>
+<!--           <include> 
+            <uri> model://container_racks</uri>
+            <name> Market 2 </name>
+            <pose> 48.343 33.233 0 0 0 -1.57079632679</pose>
+        </include> -->
+          <include> 
+            <uri> model://container_racks</uri>
+            <name> Market 3 </name>
+            <pose> 48.343 31.902 0 0 0 -1.57079632679 </pose>
+        </include>
+ 
+
+        <!-- Loops -->
+        <include> 
+            <uri> model://assembly_station</uri>
+            <name>RAAL</name>
+            <pose> 67.656 71.065 0 0 0 -1.57079632679 </pose>
+        </include>
+
+        <include> 
+            <uri> model://assembly_station_2</uri>
+            <name>RWAL</name>
+            <pose> 72.421 67.237 0 0 0 -1.57079632679 </pose>
+            <scale>0.9 0.5 0.5</scale>
+        </include>
+
+        <!-- World -->
+        <include> 
+            <uri> model://walls</uri>
+            <name>World</name>
+            <pose> 0 0 0 0 0 0 </pose>
+        </include>
+
+
+
+        <!-- Boxes -->
+
+        <!-- RALL -->
+            <!-- RAAL_op30-->
+            <include> 
+                <uri> model://op_station</uri>
+                <name> Station RAAL_OP30 </name>
+                <pose> 67.656 77.861 0 0 0 -1.57079632679 </pose>
+                <static>true</static>
+            </include>
+
+            <!-- Boxes -->
+                <include> 
+                    <uri> model://eurocontainer_A</uri>
+                    <name> Container RAAL_OP31 </name>
+                    <pose> 67.206 77.861 0.8 0 0 0 </pose>
+                    <static>true</static>
+                </include>
+
+                <include> 
+                    <uri> model://eurocontainer_A</uri>
+                    <name> Container RAAL_OP32 </name>
+                    <pose> 67.506 77.861 0.8 0 0 0 </pose>
+                    <static>true</static>
+                </include>
+
+                <include> 
+                    <uri> model://eurocontainer_A</uri>
+                    <name> Container RAAL_OP33 </name>
+                    <pose> 67.806 77.861 0.8 0 0 0 </pose>
+                    <static>true</static>
+                </include>
+
+                <include> 
+                    <uri> model://eurocontainer_A</uri>
+                    <name> Container RAAL_OP31 </name>
+                    <pose> 68.106 77.861 0.8 0 0 0 </pose>
+                    <static>true</static>
+                </include>
+
+            <!-- RAAL_op50-->
+            <include> 
+                <uri> model://op_station</uri>
+                <name> Station RAAL_OP50 </name>
+                <pose> 69.736 70.99 0 0 0 3.14159265359 </pose>
+                <static>true</static>
+            </include>
+
+                <!-- Boxes -->
+
+                <include> 
+                    <uri> model://eurocontainer_A</uri>
+                    <name> Container RAAL_OP51 </name>
+                    <pose> 69.736 70.49 0.8 0 0 -1.57079632679 </pose>
+                    <static>true</static>
+                </include>
+
+                <include> 
+                    <uri> model://eurocontainer_A</uri>
+                    <name> Container RAAL_OP52 </name>
+                    <pose> 69.736 70.74 0.8 0 0 -1.57079632679 </pose>
+                    <static>true</static>
+                </include>
+
+                <include> 
+                    <uri> model://eurocontainer_A</uri>
+                    <name> Container RAAL_OP53 </name>
+                    <pose> 69.736 70.99 0.8 0 0 -1.57079632679 </pose>
+                    <static>true</static>
+                </include>
+
+                <include> 
+                    <uri> model://eurocontainer_C</uri>
+                    <name> Container RAAL_OP54 </name>
+                    <pose> 69.736 71.34 0.8 0 0 -1.57079632679 </pose>
+                    <static>true</static>
+                </include>
+
+                <include> 
+                    <uri> model://eurocontainer_A</uri>
+                    <name> Container RAAL_OP54 </name>
+                    <pose> 69.736 71.69 0.8 0 0 -1.57079632679 </pose>
+                    <static>true</static>
+                </include>
+
+            <!-- RAAL_op60-->
+            <include> 
+                <uri> model://op_station</uri>
+                <name> Station RAAL_OP60 </name>
+                <pose> 69.736 69.326 0 0 0 3.14159265359 </pose>
+                <static>true</static>
+            </include>
+
+                <!-- Boxes -->
+
+                <include> 
+                    <uri> model://eurocontainer_C</uri>
+                    <name> Container RAAL_OP61 </name>
+                    <pose> 69.736 68.426 0.8 0 0 -1.57079632679 </pose>
+                    <static>true</static>
+                </include>
+
+                <include> 
+                    <uri> model://eurocontainer_C</uri>
+                    <name> Container RAAL_OP62 </name>
+                    <pose> 69.736 68.876 0.8 0 0 -1.57079632679 </pose>
+                    <static>true</static>
+                </include>
+
+                <include> 
+                    <uri> model://eurocontainer_C</uri>
+                    <name> Container RAAL_OP63 </name>
+                    <pose> 69.736 69.326 0.8 0 0 -1.57079632679 </pose>
+                    <static>true</static>
+                </include>
+
+                <include> 
+                    <uri> model://eurocontainer_A</uri>
+                    <name> Container RAAL_OP64 </name>
+                    <pose> 69.736 69.676 0.8 0 0 -1.57079632679 </pose>
+                    <static>true</static>
+                </include>
+
+                <include> 
+                    <uri> model://eurocontainer_C</uri>
+                    <name> Container RAAL_OP65 </name>
+                    <pose> 69.736 70.026 0.8 0 0 -1.57079632679 </pose>
+                    <static>true</static>
+                </include>
+
+
+            <!-- RAAL_op70-->
+            <include> 
+                <uri> model://op_station</uri>
+                <name> Station RAAL_OP70 </name>
+                <pose> 69.736 67.662 0 0 0 3.14159265359 </pose>
+                <static>true</static>
+            </include>
+
+                    <!-- Boxes -->
+                <include> 
+                    <uri> model://eurocontainer_A</uri>
+                    <name> Container RAAL_OP71 </name>
+                    <pose> 69.736 67.462 0.8 0 0 -1.57079632679 </pose>
+                    <static>true</static>
+                </include>
+
+                <include> 
+                    <uri> model://eurocontainer_B</uri>
+                    <name> Container RAAL_OP72 </name>
+                    <pose> 69.736 67.862 0.8 0 0 -1.57079632679 </pose>
+                    <static>true</static>
+                </include>
+
+            <!-- RWALL -->
+                <!-- RWAL_op10-->
+            <include> 
+                <uri> model://op_station</uri>
+                <name> Station RWAL_OP10 </name>
+                <pose> 71.391 65.151 0 0 0 0 </pose>
+                <static>true</static>
+            </include>
+
+            <!-- Boxes -->
+
+                <include> 
+                    <uri> model://eurocontainer_A</uri>
+                    <name> Container RWAL_OP10 </name>
+                    <pose> 71.391 64.901 0.8 0 0 0 </pose>
+                    <static>true</static>
+                </include>
+
+                <include> 
+                    <uri> model://eurocontainer_B</uri>
+                    <name> Container RWAL_OP11 </name>
+                    <pose> 71.391 65.151 0.8 0 0 0 </pose>
+                    <static>true</static>
+                </include>
+
+                <include> 
+                    <uri> model://eurocontainer_B</uri>
+                    <name> Container RWAL_OP13 </name>
+                    <pose> 71.391 65.451 0.8 0 0 0 </pose>
+                    <static>true</static>
+                </include>
+
+
+            <!-- RWAL_op20-->
+            <include> 
+                <uri> model://op_station</uri>
+                <name> Station RWAL_OP20 </name>
+                <pose> 71.391 66.726 0 0 0 0 </pose>
+                <static>true</static>
+            </include>
+
+                    <!-- Boxes -->
+
+                    <include> 
+                        <uri> model://eurocontainer_A</uri>
+                        <name> Container RWAL_OP21 </name>
+                        <pose> 71.391 66.476 0.8 0 0 -1.57079632679 </pose>
+                        <static>true</static>
+                    </include>
+
+                    <include> 
+                        <uri> model://eurocontainer_B</uri>
+                        <name> Container RWAL_OP22 </name>
+                        <pose> 71.391 66.726 0.8 0 0 -1.57079632679 </pose>
+                        <static>true</static>
+                    </include>
+
+                    <include> 
+                        <uri> model://eurocontainer_B</uri>
+                        <name> Container RWAL_OP23 </name>
+                        <pose> 71.391 66.451 0.8 0 0 -1.57079632679 </pose>
+                        <static>true</static>
+                    </include>
+
+
+            <!-- RWAL_op30-->
+            <include> 
+                <uri> model://op_station</uri>
+                <name> Station RWAL_OP20 </name>
+                <pose> 71.391 68.301 0 0 0 0 </pose>
+                <static>true</static>
+            </include>
+
+                    <!-- Boxes -->
+
+                    <include> 
+                        <uri> model://eurocontainer_A</uri>
+                        <name> Container RWAL_OP31 </name>
+                        <pose> 71.391 68.151 0.8 0 0 -1.57079632679 </pose>
+                        <static>true</static>
+                    </include>
+
+                    <include> 
+                        <uri> model://eurocontainer_B</uri>
+                        <name> Container RWAL_OP10 </name>
+                        <pose> 71.391 68.451 0.8 0 0 -1.57079632679 </pose>
+                        <static>true</static>
+                    </include>
+
+            <!-- RWAL_op40-->
+
+            <include> 
+                <uri> model://op_station</uri>
+                <name> Station RWAL_OP20 </name>
+                <pose> 73.452 65.151 0 0 0 3.14159265359 </pose>
+                <static>true</static>
+            </include>
+
+                    <!-- Boxes -->
+
+            <include> 
+                <uri> model://eurocontainer_B</uri>
+                <name> Container RAAL_OP63 </name>
+                <pose> 73.452 65.151 0.8 0 0 -1.57079632679 </pose>
+                <static>true</static>
+            </include>
+
+
+
+ <!-- Supermarkets -->
+            <!--SP1-->
+            <!-- Top Shelf-->
+            <include> 
+                <uri> model://eurocontainer_A</uri>
+                <name> Container Sp111 </name>
+                <pose> 48.023 35.059 1.240 0.349066 0 -1.57079632679 </pose>
+                <static>true</static>
+            </include>
+
+            <include> 
+                <uri> model://eurocontainer_B</uri>
+                <name> Container Sp121 </name>
+                <pose> 48.023 34.564 1.225 0.349066 0 -1.57079632679 </pose>
+                <static>true</static>
+            </include>
+
+            <include> 
+                <uri> model://eurocontainer_B</uri>
+                <name> Container Sp131 </name>
+                <pose> 48.023 34.069 1.225 0.349066 0 -1.57079632679 </pose>
+                <static>true</static>
+            </include>
+
+            <!-- Middle Shelf-->
+            <include> 
+                <uri> model://eurocontainer_A</uri>
+                <name> Container Sp112 </name>
+                <pose> 48.023 35.059 0.768  0.349066 0 -1.57079632679 </pose>
+                <static>true</static>
+            </include>
+
+            <include> 
+                <uri> model://eurocontainer_B</uri>
+                <name> Container Sp122 </name>
+                <pose> 48.023 34.564 0.768  0.349066 0 -1.57079632679 </pose>
+                <static>true</static>
+            </include>
+
+            <include> 
+                <uri> model://eurocontainer_B</uri>
+                <name> Container Sp132 </name>
+                <pose> 48.023 34.069 0.768  0.349066 0 -1.57079632679 </pose>
+                <static>true</static>
+            </include>
+
+            <!-- Empty Shelf-->
+            <include> 
+                <uri> model://eurocontainer_A</uri>
+                <name> Container Sp112 </name>
+                <pose> 48.023 35.059 0.243 0.349066 0 -1.57079632679 </pose>
+                <static>true</static>
+            </include>
+
+            <include> 
+                <uri> model://eurocontainer_B</uri>
+                <name> Container Sp122 </name>
+                <pose> 48.023 34.564 0.243  0.349066 0 -1.57079632679</pose>
+                <static>true</static>
+            </include>
+
+            <include> 
+                <uri> model://eurocontainer_B</uri>
+                <name> Container Sp132 </name>
+                <pose> 48.023 34.069 0.243 0.349066 0 -1.57079632679 </pose>
+                <static>true</static>
+            </include>
+
+           <!--SP2-->
+            <!-- Top Shelf-->
+            <include> 
+                <uri> model://eurocontainer_A</uri>
+                <name> Container Sp211 </name>
+                <pose> 48.023 33.475 1.218 0.349066 0 -1.57079632679 </pose>
+                <static>true</static>
+            </include>
+
+            <include> 
+                <uri> model://eurocontainer_B</uri>
+                <name> Container Sp221 </name>
+                <pose> 48.023 32.98 1.218  0.349066 0 -1.57079632679 </pose>
+                <static>true</static>
+            </include>
+
+        
+            <!-- Middle Shelf-->
+            <include> 
+                <uri> model://eurocontainer_A</uri>
+                <name> Container Sp212 </name>
+                <pose> 48.023 33.475 0.768 0.349066 0 -1.57079632679</pose>
+                <static>true</static>
+            </include>
+
+            <include> 
+                <uri> model://eurocontainer_B</uri>
+                <name> Container Sp222 </name>
+                <pose> 48.023 32.98 0.768  0.349066 0 -1.57079632679 </pose>
+                <static>true</static>
+            </include>
+
+            <!-- Empty Shelf-->
+            <include> 
+                <uri> model://eurocontainer_A</uri>
+                <name> Container Sp212 </name>
+                <pose> 48.023 33.475 0.2430.349066 0 -1.57079632679 </pose>
+                <static>true</static>
+            </include>
+
+            <include> 
+                <uri> model://eurocontainer_B</uri>
+                <name> Container Sp222 </name>
+                <pose> 48.023 32.98 0.243 0.349066 0 -1.57079632679 </pose>
+                <static>true</static>
+            </include>
+
+           <!--SP3-->
+            <!-- Top Shelf-->
+            <include> 
+                <uri> model://eurocontainer_A</uri>
+                <name> Container Sp311 </name>
+                <pose> 48.023 32.396 1.218 0.349066 0 -1.57079632679 </pose>
+                <static>true</static>
+            </include>
+
+            <include> 
+                <uri> model://eurocontainer_B</uri>
+                <name> Container Sp321 </name>
+                <pose> 48.023 31.901 1.218 0.349066 0 -1.57079632679 </pose>
+                <static>true</static>
+            </include>
+
+            <include> 
+                <uri> model://eurocontainer_B</uri>
+                <name> Container Sp331 </name>
+                <pose> 48.023 31.406 1.218  0.349066 0 -1.57079632679 </pose>
+                <static>true</static>
+            </include>
+
+            <!-- Middle Shelf-->
+            <include> 
+                <uri> model://eurocontainer_A</uri>
+                <name> Container Sp312 </name>
+                <pose> 48.023 32.396 0.768 0.349066 0 -1.57079632679 </pose>
+                <static>true</static>
+            </include>
+
+            <include> 
+                <uri> model://eurocontainer_B</uri>
+                <name> Container Sp322 </name>
+                <pose> 48.023 31.901 0.768  0.349066 0 -1.57079632679 </pose>
+                <static>true</static>
+            </include>
+
+            <include> 
+                <uri> model://eurocontainer_B</uri>
+                <name> Container Sp332 </name>
+                <pose> 48.023 31.406 0.768  0.349066 0 -1.57079632679 </pose>
+                <static>true</static>
+            </include>
+
+            <!-- Empty Shelf-->
+            <include> 
+                <uri> model://eurocontainer_A</uri>
+                <name> Container Sp312 </name>
+                <pose> 48.023 32.396 0.243 0.349066 0 -1.57079632679 </pose>
+                <static>true</static>
+            </include>
+
+            <include> 
+                <uri> model://eurocontainer_B</uri>
+                <name> Container Sp322 </name>
+                <pose> 48.023 31.901 0.243  0.349066 0 -1.57079632679 </pose>
+                <static>true</static>
+            </include>
+
+            <include> 
+                <uri> model://eurocontainer_B</uri>
+                <name> Container Sp332 </name>
+                <pose> 48.023 31.406 0.243  0.349066 0 -1.57079632679 </pose>
+                <static>true</static>
+            </include>
+
+
+        <!-- Shopfloor Ground  -->
+<!--         <include> 
+            <uri> model://ground_plane</uri>
+            <name> Ground </name>
+            <pose> 0 0 0 0 0 0 </pose>
+        </include>
+ -->
+    </world>
+
+</sdf>
