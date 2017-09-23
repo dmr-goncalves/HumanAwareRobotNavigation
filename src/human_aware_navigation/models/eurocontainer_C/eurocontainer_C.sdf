@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<sdf version="1.4">
+
+  <model name="European container Type C">
+
+    <static>false</static>
+
+    <link name="Container_C_structure">
+
+<!--       <pose>0 0 0 0 0 -1.57079632679</pose>
+ -->
+       <pose>0 0 0 0 0 0</pose>
+
+      <collision name="container_collision">
+        <geometry>
+                <box>
+                  <size>.30 .40 .15</size>
+                </box>
+        </geometry>
+      </collision>
+      <visual name="container_C_visual">
+        <geometry>
+          <mesh>
+            <uri>model://eurocontainer_C/meshes/EuroContainer_C.dae</uri>
+          </mesh>
+        </geometry>
+        
+        <!--<material>
+          <script>
+            <uri>model://eurocontainer_C/materials/scripts</uri>
+            <uri>model://eurocontainer_C/materials/textures</uri>
+            <name>Racks/Orange</name>
+          </script>
+        </material> -->
+      </visual>
+
+    </link>
+    
+  </model>
+</sdf>
+

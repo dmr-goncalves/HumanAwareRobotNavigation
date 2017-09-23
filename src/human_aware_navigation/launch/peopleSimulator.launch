@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+
+<launch>
+	<!-- Simulate detected people -->
+	<node name="people_simulator" pkg="people_simulation" type="simulator_node"/>
+</launch>

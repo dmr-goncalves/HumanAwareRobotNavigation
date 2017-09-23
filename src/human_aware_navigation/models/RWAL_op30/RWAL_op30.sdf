@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<sdf version="1.4">
+
+  <model name="RWAL_op30">
+
+    <static>true</static>
+
+    <link name="link">
+
+      <pose>0 0 0 0 0 0</pose>
+
+      <collision name="station_collision">
+        <geometry>
+          <mesh>
+            <uri>model://RWAL_op30/meshes/RWAL_op30.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+
+      <visual name="station_visual">
+        <geometry>
+          <mesh>
+            <uri>model://RWAL_op30/meshes/RWAL_op30.dae</uri>
+          </mesh>
+        </geometry>
+        
+        <material>
+          <script>
+            <uri>model://RWAL_op30/materials/scripts</uri>
+            <uri>model://RWAL_op30/materials/textures</uri>
+          </script>
+        </material> 
+      </visual>
+
+    </link>
+    
+  </model>
+</sdf>

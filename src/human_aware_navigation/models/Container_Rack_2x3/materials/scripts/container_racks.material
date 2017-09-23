@@ -1,0 +1,14 @@
+material Racks/Orange
+{
+  receive_shadows on
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture orange_bumpy.png
+      }
+    }
+  }
+}
