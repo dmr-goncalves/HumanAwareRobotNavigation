@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-
-<launch>
-	<!-- Remapp from spencer_tracking_msgs::DetectedPersons to people_msgs::People and add task information -->
-	<node name="HumanAwareNavigation" pkg="human_aware_navigation" type="PeopleStationMerger" output="screen" required="true">
-		<remap from="detected_people" to="/spencer/perception_internal/detected_persons/rgbd_front_top/upper_body" />
-		<remap from="tracked_people" to="/spencer/perception/tracked_persons_confirmed_by_HOG_or_upper_body" />
-	</node>
-</launch>

@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-
-<launch>
-	<!-- Get map -->
-
-	<arg name="map_file" default="$(find human_aware_navigation)/map/myMapExample.yaml " />
-	<node name="mapLoader" pkg="map_server" type="map_server" args="$(arg map_file)"/>
-	
-</launch>
